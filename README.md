@@ -28,6 +28,7 @@ Other Agent Skills agents: clone into `~/.agents/skills/playbook` or your harnes
 
 | Command | What it does |
 |---|---|
+| `/playbook` | Same as `capture`; asks for the job in one line |
 | `/playbook capture <job>` | Interview you about a recurring job, agree a contract, then write `.claude/skills/<job>/` (or `~/.claude/skills/<job>/` for a job that belongs to no single repo) with `SKILL.md`, `CONTRACT.md` and `EVALUATION.md` (Claude Code path; other harnesses use their own skills directory) |
 | `/playbook harvest <artifact> [playbook]` | Turn an approved past output into reusable templates or scripts |
 | `/playbook run <playbook> <task>` | Execute a playbook and leave an evidence record in `runs/` |
@@ -49,7 +50,7 @@ python3 .claude/skills/playbook/scripts/validate.py .claude/skills/<job>
 
 Requires Python 3 and `git` on PATH. Checks:
 
-- frontmatter: `name` is lowercase-hyphenated, at most 64 chars and matches the folder; `description` at most 1024 chars and starts with "Use when"; multi-line (`>`/`|`) descriptions are rejected
+- frontmatter: `name` is lowercase-hyphenated, at most 64 chars and matches the folder; `description` at most 1024 chars and starts with "Use when" (stricter than the spec, which does not prescribe wording); multi-line (`>`/`|`) descriptions are rejected
 - `SKILL.md` has `## Risk`, `## Done means` and `## Do not` sections
 - `CONTRACT.md` exists with a `**State:**` of `DRAFT`, `TRIAL` or `RELEASED` and `## Assumptions` and `## Open questions` sections
 - `EVALUATION.md` exists with at least one `N`, `E`, `A` and `P` case row (`N01`, `E01`, ...)
@@ -61,15 +62,15 @@ On success it creates `runs/` for evidence records and prints `stage with: git a
 
 ## Tested how
 
-Four pressure scenarios, each run by a fresh subagent with and without the skill: capture under time pressure, run with injected instructions in the task data, an owner pushing to mark an unrun check VERIFIED, and harvesting an unapproved client report containing PII, a live key and an injected note (S4). S4 was re-run on c9e7608, the current harvest text, and passed. S1–S3 were re-run on f4a3640 and passed; that was before the latest run-mode changes. Prompts, pass criteria and outcomes are in `tests/scenarios.md`. `improve` has not been scenario-tested, and evidence records are not checked by the validator. The validator's self-test is `python3 tests/test_validate.py`.
+Four pressure scenarios, each run by a fresh subagent with and without the skill: capture under time pressure (S1), run with injected instructions in the task data (S2), an owner pushing to mark an unrun check VERIFIED (S3), and harvesting an unapproved client report containing PII, a live key and an injected note (S4). S1–S3 passed on f4a3640; S2 and S3 were re-run on 7bfdf0f after the run-mode rewrite and passed; S4 passed on c9e7608. Prompts, pass criteria and outcomes are in `tests/scenarios.md`. An `improve` scenario is pending, and evidence records are not checked by the validator. The validator's self-test is `python3 tests/test_validate.py`.
 
 ## Layout
 
 - `SKILL.md` — the skill itself
 - `references/FRAMEWORK.md` — the full policy: lanes, risk tiers, gates, verification rules
 - `references/example/website-change-review/` — a complete captured playbook that passes the validator
-- `templates/` — contract, skill, evaluation and evidence templates
-- `docs/` — the logo; `assets/` is left for skill assets by Agent Skills spec convention (a convention, not a reserved name)
+- `templates/` — `CONTRACT.template.md`, `SKILL.template.md`, `EVALUATION.template.md`, `EVIDENCE.template.md`
+- `docs/` — the logo; no `assets/` in this repo; captured playbooks use `assets/` for templates
 - `scripts/validate.py` — validator for captured playbooks
 - `tests/` — validator self-test and the pressure scenarios
 
