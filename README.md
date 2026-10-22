@@ -54,6 +54,10 @@ Three pressure scenarios, each run by a fresh subagent with and without the skil
 - `scripts/validate.py` — validator for captured playbooks
 - `tests/` — validator self-test and the pressure scenarios
 
+## Security
+
+Please report vulnerabilities privately. See [SECURITY.md](SECURITY.md).
+
 ## License
 
 MIT
