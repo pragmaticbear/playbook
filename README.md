@@ -9,13 +9,13 @@ Works with Claude Code as `/playbook`, and with any agent that loads `SKILL.md` 
 Claude Code, global:
 
 ```bash
-git clone https://github.com/OWNER/playbook ~/.claude/skills/playbook
+git clone https://github.com/pragmaticbear/playbook ~/.claude/skills/playbook
 ```
 
 Claude Code, one project:
 
 ```bash
-git clone https://github.com/OWNER/playbook .claude/skills/playbook
+git clone https://github.com/pragmaticbear/playbook .claude/skills/playbook
 ```
 
 Other Agent Skills agents: clone into `~/.agents/skills/playbook` or your harness's skills directory.
