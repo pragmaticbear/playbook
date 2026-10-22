@@ -51,5 +51,6 @@ Cite the failing run file, root cause, smallest change, regressions, exact test.
 | "It looks right, call it done" | Self-review ≠ `VERIFIED`. Name the external verifier. |
 | "Multi-agent would be more robust" | Only with measured gain or required access separation. |
 | "Done twice, so make a skill" | A script or checklist may be simpler. |
+| "'Just write it' approves the contract" | It approves writing a `DRAFT`. The assumptions still need a yes; say so in the report. |
 
 Worked example: `references/example-website-change-review.md`.
