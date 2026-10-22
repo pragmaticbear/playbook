@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/logo.png" width="160" alt="playbook logo"></p>
+
 # playbook
 
 An [Agent Skill](https://agentskills.io/specification) that turns a repeated job into a reviewed, testable skill of its own. Expertise lives in the skill; acceptance lives outside the agent that does the work.
