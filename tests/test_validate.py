@@ -4,7 +4,7 @@ import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from validate import check  # noqa: E402
+from validate import check, main  # noqa: E402
 
 GOOD_SKILL = """---
 name: good-job
@@ -19,7 +19,8 @@ M. Allowed: read. Not allowed: send.
 - Self-approve.
 Read `references/rules.md` when unsure.
 """
-CONTRACT = "# Workflow contract: good-job\n- **State:** DRAFT\n"
+CONTRACT = ("# Workflow contract: good-job\n- **State:** DRAFT\n- [ ] owner read it\n"
+            "## Assumptions (need a yes)\n- see [rules](x)\n## Open questions (not guessed)\n- none\n")
 EVAL = "| N01 | No | x | y | No | a |\n| E01 | Yes | x | y | Yes | a |\n| A01 | Yes | x | y | Yes | a |\n| P01 | Yes | x | y | Yes | a |\n"
 
 
@@ -71,5 +72,60 @@ with tempfile.TemporaryDirectory() as t:
 with tempfile.TemporaryDirectory() as t:
     errs = check(make(t, skill=GOOD_SKILL.replace("## Done means", "## Outcome")))
     assert any("Done means" in e for e in errs), errs
+
+for missing in ("## Risk and permitted actions", "## Do not"):
+    with tempfile.TemporaryDirectory() as t:
+        errs = check(make(t, skill=GOOD_SKILL.replace(missing, "## Notes")))
+        assert any(missing.split()[1] in e and "section" in e for e in errs), errs
+
+with tempfile.TemporaryDirectory() as t:
+    errs = check(make(t, skill=GOOD_SKILL.replace("## Risk and permitted actions", "## Risky business")))
+    assert any("'## Risk'" in e for e in errs), errs
+
+with tempfile.TemporaryDirectory() as t:
+    long = "a" * 65
+    errs = check(make(t, skill=GOOD_SKILL.replace("name: good-job", f"name: {long}")))
+    assert any("max 64" in e for e in errs), errs
+
+with tempfile.TemporaryDirectory() as t:
+    desc = "Use when a release ticket asks for notes; not for hotfixes."
+    assert check(make(t, skill=GOOD_SKILL.replace(desc, f'"{desc}"'))) == []
+
+with tempfile.TemporaryDirectory() as t:
+    errs = check(make(t, skill=GOOD_SKILL.replace("description: Use", "description: >\n  Use")))
+    assert any("multi-line" in e for e in errs) and not any("Use when" in e for e in errs), errs
+
+with tempfile.TemporaryDirectory() as t:
+    errs = check(make(t, contract=CONTRACT + "- **Owner:** [person or role]\n"))
+    assert errs == ["CONTRACT.md: unfilled placeholder [person or role]"], errs
+
+with tempfile.TemporaryDirectory() as t:
+    assert check(make(t, contract=CONTRACT + "- [x] done, `[not a placeholder]`\n")) == []
+
+for heading in ("## Assumptions", "## Open questions"):
+    with tempfile.TemporaryDirectory() as t:
+        errs = check(make(t, contract=CONTRACT.replace(heading, "## Other")))
+        assert any(heading in e for e in errs), errs
+
+with tempfile.TemporaryDirectory() as t:
+    errs = check(make(t, evaluation=EVAL.replace("N01", "N10")))
+    assert errs == [], errs
+
+with tempfile.TemporaryDirectory() as t:
+    skill = GOOD_SKILL + "Run `scripts/<repo>/validate.py` from the repo.\n"
+    assert check(make(t, skill=skill)) == []
+
+with tempfile.TemporaryDirectory() as t:
+    skill = GOOD_SKILL.replace("`references/rules.md`", "`references/rules.md --section X.Y`")
+    assert check(make(t, skill=skill)) == []
+
+with tempfile.TemporaryDirectory() as t:
+    d = make(t)
+    assert main(["validate.py", str(d)]) == 0 and (d / "runs" / ".gitkeep").exists()
+    (d / "CONTRACT.md").unlink()
+    assert main(["validate.py", str(d)]) == 1
+
+example = Path(__file__).resolve().parents[1] / "references" / "example" / "website-change-review"
+assert check(example) == [], check(example)
 
 print("test_validate: all assertions passed")

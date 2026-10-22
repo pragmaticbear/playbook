@@ -2,14 +2,16 @@
 """Validate a captured playbook directory. Usage: validate.py <playbook-dir>
 
 Checks SKILL.md frontmatter, required companion files, referenced paths,
-and creates runs/ for evidence records. Exit 1 on any error.
+unfilled placeholders, and creates runs/ for evidence records. Exit 1 on any error.
 """
 import re
 import subprocess
 import sys
 from pathlib import Path
 
-STATES = ("DRAFT", "APPROVED FOR TRIAL", "VERIFIED", "RELEASE APPROVED")
+STATES = ("DRAFT", "TRIAL", "RELEASED")
+# [Something] that is not a markdown link and not an [x] checkbox
+PLACEHOLDER = re.compile(r"\[(?![xX]\])([A-Za-z][^\]\n]*)\](?!\()")
 
 
 def frontmatter(text):
@@ -18,10 +20,19 @@ def frontmatter(text):
         return None
     fields = {}
     for line in m.group(1).splitlines():
+        if not line.strip() or line[0].isspace():
+            continue  # nested keys (e.g. metadata.version) are not checked
         k, _, v = line.partition(":")
-        fields[k.strip()] = v.strip()
-    fields["_raw"] = m.group(1)
+        v = v.strip()
+        if len(v) >= 2 and v[0] == v[-1] and v[0] in "'\"":
+            v = v[1:-1]
+        fields[k.strip()] = v
     return fields
+
+
+def placeholders(path):
+    text = re.sub(r"`[^`\n]*`", "", path.read_text())
+    return [f"{path.name}: unfilled placeholder [{m}]" for m in PLACEHOLDER.findall(text)]
 
 
 def check(d):
@@ -38,41 +49,61 @@ def check(d):
         desc = fm.get("description", "")
         if not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", name):
             errors.append(f"SKILL.md: name {name!r} must be lowercase letters, digits, hyphens")
+        if len(name) > 64:
+            errors.append(f"SKILL.md: name is {len(name)} chars, max 64")
         if name != d.resolve().name:
             errors.append(f"SKILL.md: name {name!r} != directory {d.resolve().name!r}")
-        if not desc.startswith("Use when"):
+        if re.fullmatch(r"[>|][-+]?", desc):
+            errors.append("SKILL.md: multi-line descriptions are not supported by this validator")
+        elif not desc.startswith("Use when"):
             errors.append("SKILL.md: description must start with 'Use when' (triggers only)")
-        if "[" in desc:
-            errors.append("SKILL.md: description still has a [placeholder]")
-        if len(fm["_raw"]) > 1024:
-            errors.append(f"SKILL.md: frontmatter is {len(fm['_raw'])} chars, max 1024")
+        if len(desc) > 1024:
+            errors.append(f"SKILL.md: description is {len(desc)} chars, max 1024")
     for req in ("CONTRACT.md", "EVALUATION.md"):
         if not (d / req).exists():
             errors.append(f"missing {req}")
     contract = d / "CONTRACT.md"
     if contract.exists():
-        m = re.search(r"\*\*State:\*\*\s*(.+)", contract.read_text())
+        text = contract.read_text()
+        m = re.search(r"\*\*State:\*\*\s*(.+)", text)
         state = m.group(1).strip() if m else ""
         if state not in STATES:
             errors.append(f"CONTRACT.md: **State:** must be one of {STATES}, got {state!r}")
+        for heading in ("Assumptions", "Open questions"):
+            if not re.search(rf"^##\s+{heading}(?!\w)", text, re.M | re.I):
+                errors.append(f"CONTRACT.md: no '## {heading}' section")
     evaluation = d / "EVALUATION.md"
     if evaluation.exists():
         text = evaluation.read_text()
-        for case in ("N0", "E0", "A0", "P0"):
-            if not re.search(rf"^\|\s*{case}\d", text, re.M):
-                errors.append(f"EVALUATION.md: no {case}x case row (normal/edge/adversarial/protected-check)")
+        for case in "NEAP":
+            if not re.search(rf"^\|\s*{case}\d+", text, re.M):
+                errors.append(f"EVALUATION.md: no {case}01-style case row (normal/edge/adversarial/protected-check)")
+    for f in (skill, contract, evaluation):
+        if f.exists():
+            errors += placeholders(f)
     body = skill.read_text()
     for heading, why in (("Risk", "risk tier and allowed operations"),
                          ("Done means", "mandatory checks and verifier"),
                          ("Do not", "forbidden actions")):
-        if not re.search(rf"^##\s+{heading}", body, re.M | re.I):
+        if not re.search(rf"^##\s+{heading}(?!\w)", body, re.M | re.I):
             errors.append(f"SKILL.md: no '## {heading}' section ({why})")
-    for ref in re.findall(r"`((?:references|assets|scripts)/[^`]+)`", body):
+    for span in re.findall(r"`((?:references|assets|scripts)/[^`]+)`", body):
+        ref = span.split()[0]  # `scripts/x.sh --flag` checks scripts/x.sh
+        if "<" in ref or ">" in ref:
+            continue  # a pointer such as <repo>/scripts/x.py, not a file here
         if "[" in ref:
             errors.append(f"SKILL.md: unfilled placeholder path {ref}")
-        elif not (d / ref).exists():
+        elif not (d / ref).exists():  # relative to the skill directory
             errors.append(f"SKILL.md: references {ref} which does not exist")
     return errors
+
+
+def gitignored(path):
+    try:
+        return subprocess.run(["git", "check-ignore", "-q", str(path)],
+                              capture_output=True).returncode == 0
+    except FileNotFoundError:  # no git on PATH
+        return False
 
 
 def main(argv):
@@ -84,12 +115,12 @@ def main(argv):
     for e in errors:
         print(f"ERROR {e}")
     if not errors:
-        ignored = subprocess.run(["git", "check-ignore", "-q", str(d / "SKILL.md")],
-                                 capture_output=True).returncode == 0
-        if ignored:
+        if gitignored(d / "SKILL.md"):
             print(f"WARN {d}: gitignored; `git add -f {d}` to track it")
         runs = d / "runs"
-        runs.mkdir(exist_ok=True)
+        if not runs.exists():
+            runs.mkdir()
+            print(f"created {runs}/")
         (runs / ".gitkeep").touch()
         print(f"OK {d}: valid, runs/ ready")
     return 1 if errors else 0

@@ -5,6 +5,7 @@
 - **Business outcome:** [why it matters]
 - **Scope / exclusions:** [in scope | explicitly out]
 - **Complexity:** [S / V / E]
+- **Lane:** [script / prompt / skill / skill + scripts / bounded agent]
 - **Risk:** [L / M / H] (risk independent of complexity)
 - **Baseline solution:** [manual/script/direct prompt/current agent]
 - **Why a playbook:** [specific repeatability or errors reduced]
@@ -20,8 +21,16 @@
 - **Approval boundary:** [what requires an explicit yes]
 - **Fallback / rollback / time budget:** [what happens on failure]
 - **Owner-reviewed examples:** [good / bad]
-- **Open questions:** [not guessed]
 - **Playbook version:** [Git revision once committed; until then "uncommitted draft"]
 - **State:** DRAFT
 
-<!-- State is one of: DRAFT, APPROVED FOR TRIAL, VERIFIED, RELEASE APPROVED. Only the owner moves it forward. -->
+<!-- State is one of: DRAFT, TRIAL, RELEASED. Only the owner moves it forward. -->
+
+## Facts
+- [confirmed by the owner or an artifact]
+
+## Assumptions (need a yes)
+- A1: [default chosen while the owner could not answer]
+
+## Open questions (not guessed)
+- [question, who answers it]
