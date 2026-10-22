@@ -106,16 +106,9 @@ Never emit `APPROVED` solely because a model is confident, or `VERIFIED` because
 
 ## 5. Metrics and architecture selection
 
-Track: success rate, severity-weighted defect rate, manual corrections per run, elapsed time, LLM usage/cost, total tooling maintenance time, and unsafe/unapproved action attempts. For small sample sizes, treat results as directional.
+Track per run: success, severity-weighted defects, manual corrections, elapsed time, tokens/cost, unsafe or unapproved action attempts. Small samples are directional only.
 
-Compare at least:
-- Current/manual process or ordinary single prompt.
-- One capable assistant + approved playbook.
-- Optional multi-agent approach **only when warranted** by parallelism or separation of duties.
-
-Use the same representative inputs, a held-out set, and consistent grading. Run multiple trials for nondeterministic paths when budget allows; report counts and variability. Do not generalize anecdotal improvements into claims of universal efficiency.
-
-**Promote** only when defined minimum quality is met, no critical safety failure appears, and the extra complexity pays for itself. If multi-agent does not materially outperform the single-agent playbook on quality, safety or elapsed time, prefer the simpler option.
+Compare the manual process or a plain prompt, one assistant plus the playbook, and multi-agent only when parallelism or separation of duties justifies it. Same inputs, a held-out set, consistent grading. **Promote** only when the minimum quality is met, no critical safety failure appeared, and any extra complexity measurably paid for itself.
 
 ## 6. Permissions and security rules
 
@@ -127,14 +120,9 @@ Use the same representative inputs, a held-out set, and consistent grading. Run 
 6. Never allow the job-performing agent to alter protected grading, approval evidence or audit records used to certify its own success.
 7. Record versioned provenance and stop on unexpected side effects.
 
-## 7. Adaptation to project tooling
+## 7. Harness boundary
 
-- **Claude Code:** playbooks live in `.claude/skills/<job>/` (project) or `~/.claude/skills/<job>/` (global); use scripts and project files for checks.
-- **Codex / Antigravity:** follow each harness's documented skill detection/install conventions; reuse the same portable source where supported, with a thin adapter where necessary.
-- **Skill systems (bearpaws, superpowers, etc.):** keep one canonical skill source and generate target-specific adapters; this framework adds proof/approval discipline rather than a rival orchestration engine.
-- **Orchestrators:** treat each task as a governed unit with a playbook version and immutable evidence; use extra agents for role handoff only when benefits/risk isolation justify them.
-
-Do not assume a Markdown instruction file can enforce tool permissions or stop a hostile model. Those boundaries must be supplied by harness/runtime, protected infrastructure and human approval.
+A Markdown skill cannot enforce tool permissions or stop a hostile model. Permission boundaries come from the harness, protected infrastructure and human approval; the skill only tells a cooperative agent where they are. Keep one canonical skill source; add thin adapters for other harnesses rather than forks.
 
 ## 8. Minimum completion checklist
 
