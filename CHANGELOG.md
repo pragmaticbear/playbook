@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.2.0 — 2026-10-22
+
+Fixes from an independent review and two real capture runs.
+
+- Validator: per-field spec limits (name 64, description 1024) instead of a whole-frontmatter cap; quoted values accepted; multi-line descriptions reported as unsupported; exact-word section headings; no crash without git.
+- Validator: unfilled `[placeholder]` detection in `SKILL.md`, `CONTRACT.md` and `EVALUATION.md`; `CONTRACT.md` needs Assumptions and Open questions sections; `N10`-style case rows count; referenced paths ignore arguments and `<pointer>` paths.
+- Contract states renamed to `DRAFT`, `TRIAL`, `RELEASED`, a separate axis from run states; FRAMEWORK maps the gates to them.
+- Real example playbook at `references/example/website-change-review/` replaces the prose example.
+- Description adds SOP, runbook, checklist, recurring task and "automate this process"; capture steps tightened from real runs (absent user, staging, held-out cases, verifier, assumed checks).
+- Logo moved to `docs/` (`assets/` is reserved by the Agent Skills spec).
+- README corrections: validator path, requirements and checks, harness-specific write path, both state axes, untested modes.
+
 ## 0.1.1 — 2026-10-22
 
 Improve cycle from the first run records (`tests/scenarios.md`, "Improve cycle 1").
