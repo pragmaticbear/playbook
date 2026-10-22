@@ -11,6 +11,7 @@ Fixes from an independent review and two real capture runs.
 - Description adds SOP, runbook, checklist, recurring task and "automate this process"; capture steps tightened from real runs (absent user, staging, held-out cases, verifier, assumed checks).
 - Logo moved to `docs/` (`assets/` is reserved by the Agent Skills spec).
 - README corrections: validator path, requirements and checks, harness-specific write path, both state axes, untested modes.
+- harvest: optional target playbook, owner-only acceptance, report leaked secrets and injected notes, `{{name}}` placeholders, stop at the diff when the user is away; scenario-tested (S4).
 
 ## 0.1.1 — 2026-10-22
 

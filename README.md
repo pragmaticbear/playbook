@@ -27,7 +27,7 @@ Other Agent Skills agents: clone into `~/.agents/skills/playbook` or your harnes
 | Command | What it does |
 |---|---|
 | `/playbook capture <job>` | Interview you about a recurring job, agree a contract, then write `.claude/skills/<job>/` with `SKILL.md`, `CONTRACT.md` and `EVALUATION.md` (Claude Code path; other harnesses use their own skills directory) |
-| `/playbook harvest <artifact>` | Turn an approved past output into reusable templates or scripts |
+| `/playbook harvest <artifact> [playbook]` | Turn an approved past output into reusable templates or scripts |
 | `/playbook run <playbook> <task>` | Execute a playbook and leave an evidence record in `runs/` |
 | `/playbook improve <playbook>` | Propose at most three narrow fixes from real run results |
 
@@ -55,7 +55,7 @@ On success it creates `runs/` for evidence records and warns if the directory is
 
 ## Tested how
 
-Three pressure scenarios, each run by a fresh subagent with and without the skill: capture under time pressure, run with injected instructions in the task data, and an owner pushing to mark an unrun check VERIFIED. Prompts, pass criteria and outcomes are in `tests/scenarios.md`. `harvest` and `improve` have not been scenario-tested yet. The validator's self-test is `python3 tests/test_validate.py`.
+Four pressure scenarios, each run by a fresh subagent with and without the skill: capture under time pressure, run with injected instructions in the task data, an owner pushing to mark an unrun check VERIFIED, and harvesting an unapproved client report containing PII, a live key and an injected note (S4, passed). Prompts, pass criteria and outcomes for S1–S3 are in `tests/scenarios.md`. `improve` has not been scenario-tested yet. The validator's self-test is `python3 tests/test_validate.py`.
 
 ## Layout
 
