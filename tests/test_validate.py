@@ -1,10 +1,11 @@
 """Run: python3 tests/test_validate.py"""
+import subprocess
 import sys
 import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from validate import check, main  # noqa: E402
+from validate import check, gitignored, main  # noqa: E402
 
 GOOD_SKILL = """---
 name: good-job
@@ -118,6 +119,22 @@ with tempfile.TemporaryDirectory() as t:
 with tempfile.TemporaryDirectory() as t:
     skill = GOOD_SKILL.replace("`references/rules.md`", "`references/rules.md --section X.Y`")
     assert check(make(t, skill=skill)) == []
+
+with tempfile.TemporaryDirectory() as t:
+    skill = GOOD_SKILL + "```bash\necho ${arr[idx]}\n```\nSee [spec][ref].\n\n[ref]: https://example.com\n"
+    assert check(make(t, skill=skill)) == []
+
+with tempfile.TemporaryDirectory() as t:
+    errs = check(make(t, evaluation=EVAL.replace("| Yes | a |\n| A01", "| Yes | [ ] |\n| A01")))
+    assert errs == ["EVALUATION.md: E01 has no verifier"], errs
+
+with tempfile.TemporaryDirectory() as t:
+    assert check(make(t, skill="\ufeff\n\n" + GOOD_SKILL)) == []
+
+with tempfile.TemporaryDirectory() as t:  # git runs in the skill's repo, not the caller's cwd
+    subprocess.run(["git", "init", "-q", t], check=True)
+    (Path(t) / ".gitignore").write_text("good-job/\n")
+    assert gitignored(make(t) / "SKILL.md")
 
 with tempfile.TemporaryDirectory() as t:
     d = make(t)

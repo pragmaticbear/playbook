@@ -2,7 +2,8 @@
 """Validate a captured playbook directory. Usage: validate.py <playbook-dir>
 
 Checks SKILL.md frontmatter, required companion files, referenced paths,
-unfilled placeholders, and creates runs/ for evidence records. Exit 1 on any error.
+unfilled placeholders and named verifiers, and creates runs/ for evidence
+records. Exit 1 on any error.
 """
 import re
 import subprocess
@@ -10,12 +11,13 @@ import sys
 from pathlib import Path
 
 STATES = ("DRAFT", "TRIAL", "RELEASED")
-# [Something] that is not a markdown link and not an [x] checkbox
-PLACEHOLDER = re.compile(r"\[(?![xX]\])([A-Za-z][^\]\n]*)\](?!\()")
+# [Something] that is not an inline or reference-style link, a link definition
+# or an [x] checkbox
+PLACEHOLDER = re.compile(r"(?<!\])\[(?![xX]\])([A-Za-z][^\]\n]*)\](?!\(|\[|:)")
 
 
 def frontmatter(text):
-    m = re.match(r"---\n(.*?)\n---\n", text, re.S)
+    m = re.match(r"\ufeff?\s*---\n(.*?)\n---\n", text, re.S)  # BOM, blank lines
     if not m:
         return None
     fields = {}
@@ -31,7 +33,8 @@ def frontmatter(text):
 
 
 def placeholders(path):
-    text = re.sub(r"`[^`\n]*`", "", path.read_text())
+    text = re.sub(r"```.*?```", "", path.read_text(), flags=re.S)
+    text = re.sub(r"`[^`\n]*`", "", text)
     return [f"{path.name}: unfilled placeholder [{m}]" for m in PLACEHOLDER.findall(text)]
 
 
@@ -78,6 +81,10 @@ def check(d):
         for case in "NEAP":
             if not re.search(rf"^\|\s*{case}\d+", text, re.M):
                 errors.append(f"EVALUATION.md: no {case}01-style case row (normal/edge/adversarial/protected-check)")
+        for row in re.findall(r"^\|\s*[NEAP]\d+.*$", text, re.M):
+            cells = [c.strip() for c in row.strip().strip("|").split("|")]
+            if cells[-1] in ("", "[ ]"):
+                errors.append(f"EVALUATION.md: {cells[0]} has no verifier")
     for f in (skill, contract, evaluation):
         if f.exists():
             errors += placeholders(f)
@@ -99,9 +106,10 @@ def check(d):
 
 
 def gitignored(path):
-    try:
+    path = path.resolve()
+    try:  # run inside the skill's repo, wherever the validator is called from
         return subprocess.run(["git", "check-ignore", "-q", str(path)],
-                              capture_output=True).returncode == 0
+                              capture_output=True, cwd=path.parent.parent).returncode == 0
     except FileNotFoundError:  # no git on PATH
         return False
 
