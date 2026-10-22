@@ -38,7 +38,7 @@ None yet. Candidates once the owner approves them: the review matrix template, t
 
 ## Done means
 Required checks, all mandatory: `npm run test:a11y`, `npm run test:unit`, and the protected CI pipeline on the PR. A check that cannot run → `INCOMPLETE`, never a pass.
-Verifier: protected CI for the automated checks; the design reviewer (Priya, web team) for screenshots and keyboard walk-through. Not this agent.
+Verifier: protected CI for the automated checks; the design reviewer (Priya, web team) for screenshots and keyboard walk-through (assumed, see CONTRACT.md A1). Not this agent.
 
 ## Do not
 - Edit tests, fixtures, `.skip` markers, test globs or CI configuration to make a check pass.

@@ -22,12 +22,14 @@ Suggested complexity lanes (choose one):
 4. **Bounded agent:** variable sequence of read/transform/tool actions within fixed permissions.
 5. **Multi-agent:** independent parallelizable research, enforced separation of access, or gains demonstrated in a representative evaluation.
 
+Subagents used as a test subject, or as a tool the worker calls, do not make a job multi-agent. When the user explicitly asks for a skill (in words, not merely by invoking `/playbook capture`), comply even if a simpler lane fits, and record the doubt in the contract.
+
 ## 2. Two-axis classification
 
 **Complexity** (S = simple fixed workflow, V = variable but bounded, E = exploratory/parallel).
 **Risk** (L = reversible/no sensitive data, M = external impact or material business decisions, H = sensitive/financial/security/publication/production impact).
 
-Risk sets a **minimum** approval level independently of complexity. A one-line production change can be high risk. Extra model deliberation does not lower the risk level.
+Risk sets a **minimum** approval level independently of complexity. A one-line production change can be high risk. Extra model deliberation does not lower the risk level. A recurring send may run unattended only once the contract is `RELEASED`, and only under a written rule from the owner in the contract.
 
 | Risk | Action permission | Evidence required | Completion authority |
 |---|---|---|---|
@@ -37,7 +39,7 @@ Risk sets a **minimum** approval level independently of complexity. A one-line p
 
 ## 3. Lifecycle and gates
 
-The gates map to the `CONTRACT.md` state: `DRAFT` while gates D, S and C are being passed; `TRIAL` while T and V run; `RELEASED` once P has passed. Only the owner moves the state forward.
+`CONTRACT.md` state: `DRAFT`: sandbox trials only; `TRIAL`: once the owner opens trials; `RELEASED`: once Gate P has passed. Only the owner moves the state forward.
 
 ### Phase 1 — DISCOVER
 **Goal:** obtain demonstrated practice, not plausible-sounding assumptions.
@@ -66,6 +68,7 @@ Create a portable `SKILL.md` with `name` and `description` frontmatter. Keep it 
 - Reviewed by the owner; traceable to a source; safe to share in this project.
 - Appropriately named, with a short `INDEX.md` in large libraries.
 - Changed by review/PR, never by unreviewed automatic self-modification.
+- Examples taken from history alone are labelled "candidate, unreviewed" until the owner reviews them.
 
 **Gate C:** skill is syntactically valid, references exist, scripts have known dependencies, and reviewer has approved its scope. The skill may help build the workflow; it cannot grant itself broader permissions.
 

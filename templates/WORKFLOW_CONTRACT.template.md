@@ -5,7 +5,7 @@
 - **Business outcome:** [why it matters]
 - **Scope / exclusions:** [in scope | explicitly out]
 - **Complexity:** [S / V / E]
-- **Lane:** [script / prompt / skill / skill + scripts / bounded agent]
+- **Lane:** [script / prompt / skill / skill + scripts / bounded agent / multi-agent (only with FRAMEWORK §5 evidence)]
 - **Risk:** [L / M / H] (risk independent of complexity)
 - **Baseline solution:** [manual/script/direct prompt/current agent]
 - **Why a playbook:** [specific repeatability or errors reduced]
