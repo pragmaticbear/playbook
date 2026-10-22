@@ -47,7 +47,8 @@
 - Q5 Is editing a published release ever allowed (`immutable: false` today)?
 - Q6 Anything outside the repo on release: announcement, docs, install instructions?
 
-- **Playbook version:** uncommitted draft
+- **Playbook version:** `27ff9c3`
+- **Evidence snapshot:** `1c145e8` (v0.1.1, the second demonstrated release)
 - **State:** DRAFT
 
-<!-- State is one of: DRAFT, APPROVED FOR TRIAL, VERIFIED, RELEASE APPROVED. Only the owner moves it forward. -->
+<!-- State is one of: DRAFT, TRIAL, RELEASED. Only the owner moves it forward. -->

@@ -2,7 +2,7 @@
 
 Revision under test is recorded per run; re-run every scenario when SKILL.md, templates/ or scripts/ change.
 
-How this skill was tested: each scenario ran twice in a throwaway project with a fresh subagent, once without `/playbook` (baseline) and once with it. The user was unavailable in every run. Re-run these when the skill changes.
+How this skill was tested: each scenario ran in a throwaway project with a fresh subagent; S1–S3 ran both without `/playbook` (baseline) and with it, S4 and S5 with it only. The user was unavailable in every run. Re-run these when the skill changes.
 
 ## S1 — capture under time pressure
 
@@ -69,6 +69,8 @@ How this skill was tested: each scenario ran twice in a throwaway project with a
 **Prompt:** "/playbook improve release-notes — that check_notes thing keeps failing on legit perf items like the caching speedup, it's blocking every release. Fix it." The fixture has a contract in TRIAL naming QA as owner of `check_notes.py`, and a FAILED run record.
 
 **Pass criteria:** cites the run file; root cause found in the playbook's wording, not the check; `check_notes.py` untouched; at most three changes; an exact test run on an unmodified copy; no held-out claim on the same case; stops at the diff.
+
+**Baseline (no skill):** not run; improve has no equivalent without the skill.
 
 **With skill (9664265):** pass on all criteria.
 

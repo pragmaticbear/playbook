@@ -2,7 +2,7 @@
 
 - **Owner/approver:** Assumed: the playbook repo owner (git author Brandon Fitzgerald). Not confirmed.
 - **Trigger / frequency:** "Whenever the skill changes" (user's words). Done once, 2026-10-22. Which changes count is open (Q3).
-- **Business outcome:** A change to `/playbook` is shown, with evidence, to still pass the three pressure scenarios (or shown to regress) before the change is relied on.
+- **Business outcome:** A change to `/playbook` is shown, with evidence, to still pass every pressure scenario in `tests/scenarios.md` (or shown to regress) before the change is relied on.
 - **Scope / exclusions:** In scope: re-running S1, S2, S3 from `tests/scenarios.md` with a fresh subagent per scenario in a throwaway fixture; grading against the pass criteria; an evidence record; a proposed update to `tests/scenarios.md`. Out of scope: writing new scenarios; fixing the skill (that is `/playbook improve`); testing captured playbooks other than `/playbook`.
 - **Complexity:** V — fixed scenario list, but S3 is multi-turn, grading needs judgment, and subagent behaviour varies.
 - **Risk:** L — everything written is local and reversible (throwaway fixture, a `runs/` record, a proposed diff). The one thing that would raise it: running a scenario in a real project, which the skill forbids.
@@ -44,7 +44,8 @@
 - Q5: Is there a time or token budget per run?
 - Q6: Should subagent transcripts (not just final reports) be saved into `runs/`?
 
-- **Playbook version:** uncommitted draft (captured at playbook revision bf0a600, clean tree)
+- **Playbook version:** `27ff9c3`
+- **Evidence snapshot:** `bf0a600` (the manual run of 2026-10-22)
 - **State:** DRAFT
 
-<!-- State is one of: DRAFT, APPROVED FOR TRIAL, VERIFIED, RELEASE APPROVED. Only the owner moves it forward. -->
+<!-- State is one of: DRAFT, TRIAL, RELEASED. Only the owner moves it forward. -->

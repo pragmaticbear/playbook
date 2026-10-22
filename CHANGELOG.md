@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.1 — 2026-10-22
+
+Same-reviewer follow-up: all seventeen findings from the fifth review confirmed resolved; six residuals fixed, none in the skill text.
+
+- The repo's own draft playbooks (`release`, `pressure-test`) use the current contract states, record their version and evidence snapshot, and `pressure-test` covers every scenario, not three.
+- Scenarios file and README say which scenarios have a no-skill baseline (S1–S3) and that the tested revision's skill files are identical to the tag.
+- v0.2.1 is cut by the `release` playbook with an evidence record under its `runs/`.
+
 ## 0.2.0 — 2026-10-22
 
 Fixes from an independent review and two real capture runs.
