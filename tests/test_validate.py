@@ -129,6 +129,19 @@ with tempfile.TemporaryDirectory() as t:
     assert errs == ["EVALUATION.md: E01 has no verifier"], errs
 
 with tempfile.TemporaryDirectory() as t:
+    errs = check(make(t, evaluation=EVAL.replace("| No | a |\n| E01", "| No |\n| E01")))
+    assert errs == ["EVALUATION.md: N01 has no verifier"], errs
+
+with tempfile.TemporaryDirectory() as t:
+    assert check(make(t, evaluation=EVAL.replace("| Yes | a |\n| A01", "| Yes | open (blocks TRIAL) |\n| A01"))) == []
+
+with tempfile.TemporaryDirectory() as t:
+    assert check(make(t, skill=GOOD_SKILL + "See [the spec].\n\n[the spec]: https://example.com\n")) == []
+
+with tempfile.TemporaryDirectory() as t:
+    assert check(make(t, skill=GOOD_SKILL + "~~~\nx = [name]\n~~~\n")) == []
+
+with tempfile.TemporaryDirectory() as t:
     assert check(make(t, skill="\ufeff\n\n" + GOOD_SKILL)) == []
 
 with tempfile.TemporaryDirectory() as t:  # git runs in the skill's repo, not the caller's cwd

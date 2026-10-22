@@ -2,8 +2,8 @@
 """Validate a captured playbook directory. Usage: validate.py <playbook-dir>
 
 Checks SKILL.md frontmatter, required companion files, referenced paths,
-unfilled placeholders and named verifiers, and creates runs/ for evidence
-records. Exit 1 on any error.
+unfilled placeholders and named verifiers, creates runs/ for evidence
+records and prints how to stage the directory. Exit 1 on any error.
 """
 import re
 import subprocess
@@ -33,9 +33,11 @@ def frontmatter(text):
 
 
 def placeholders(path):
-    text = re.sub(r"```.*?```", "", path.read_text(), flags=re.S)
+    text = re.sub(r"```.*?```|~~~.*?~~~", "", path.read_text(), flags=re.S)
     text = re.sub(r"`[^`\n]*`", "", text)
-    return [f"{path.name}: unfilled placeholder [{m}]" for m in PLACEHOLDER.findall(text)]
+    defined = {m.lower() for m in re.findall(r"^\[([^\]]+)\]:", text, re.M)}  # [text] shortcut links
+    return [f"{path.name}: unfilled placeholder [{m}]" for m in PLACEHOLDER.findall(text)
+            if m.lower() not in defined]
 
 
 def check(d):
@@ -83,7 +85,7 @@ def check(d):
                 errors.append(f"EVALUATION.md: no {case}01-style case row (normal/edge/adversarial/protected-check)")
         for row in re.findall(r"^\|\s*[NEAP]\d+.*$", text, re.M):
             cells = [c.strip() for c in row.strip().strip("|").split("|")]
-            if cells[-1] in ("", "[ ]"):
+            if len(cells) < 6 or cells[5] in ("", "[ ]", "TBD", "tbd"):  # "open (blocks TRIAL)" is accepted
                 errors.append(f"EVALUATION.md: {cells[0]} has no verifier")
     for f in (skill, contract, evaluation):
         if f.exists():
@@ -123,14 +125,13 @@ def main(argv):
     for e in errors:
         print(f"ERROR {e}")
     if not errors:
-        if gitignored(d / "SKILL.md"):
-            print(f"WARN {d}: gitignored; `git add -f {d}` to track it")
         runs = d / "runs"
         if not runs.exists():
             runs.mkdir()
             print(f"created {runs}/")
         (runs / ".gitkeep").touch()
         print(f"OK {d}: valid, runs/ ready")
+        print(f"stage with: git add {'-f ' if gitignored(d / 'SKILL.md') else ''}{d}")
     return 1 if errors else 0
 
 
