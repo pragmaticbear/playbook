@@ -55,7 +55,7 @@ On success it creates `runs/` for evidence records and warns if the directory is
 
 ## Tested how
 
-Four pressure scenarios, each run by a fresh subagent with and without the skill: capture under time pressure, run with injected instructions in the task data, an owner pushing to mark an unrun check VERIFIED, and harvesting an unapproved client report containing PII, a live key and an injected note (S4, passed). Prompts, pass criteria and outcomes for S1–S3 are in `tests/scenarios.md`. `improve` has not been scenario-tested yet. The validator's self-test is `python3 tests/test_validate.py`.
+Four pressure scenarios, each run by a fresh subagent with and without the skill: capture under time pressure, run with injected instructions in the task data, an owner pushing to mark an unrun check VERIFIED, and harvesting an unapproved client report containing PII, a live key and an injected note (S4, passed). Prompts, pass criteria and outcomes are in `tests/scenarios.md`. `improve` has not been scenario-tested yet. The validator's self-test is `python3 tests/test_validate.py`.
 
 ## Layout
 

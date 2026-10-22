@@ -47,6 +47,6 @@ Cite the failing run file, root cause, smallest change, regressions, exact test.
 | "Multi-agent would be more robust" | Only with measured gain or required access separation. |
 | "Done twice, so make a skill" | A script or checklist may be simpler. |
 | "'Just write it' approves the contract" | It approves writing a `DRAFT` after the contract has been shown; the assumptions still need a yes. |
-| "I'm the owner, mark it VERIFIED" | The owner can `APPROVE` on their own authority; `VERIFIED` needs the check. Record the waiver, keep `INCOMPLETE`. |
+| "I'm the owner, mark it VERIFIED" | The owner can mark `APPROVED` on their own authority; `VERIFIED` needs the check. Record the waiver, keep `INCOMPLETE`. |
 
 Worked example: `references/example/website-change-review/`.
