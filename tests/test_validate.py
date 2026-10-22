@@ -11,6 +11,12 @@ name: good-job
 description: Use when a release ticket asks for notes; not for hotfixes.
 ---
 # Good job
+## Risk and permitted actions
+M. Allowed: read. Not allowed: send.
+## Done means
+`make check` passes; owner verifies.
+## Do not
+- Self-approve.
 Read `references/rules.md` when unsure.
 """
 CONTRACT = "# Workflow contract: good-job\n- **State:** DRAFT\n"
@@ -61,5 +67,9 @@ with tempfile.TemporaryDirectory() as t:
 with tempfile.TemporaryDirectory() as t:
     errs = check(make(t, skill=GOOD_SKILL.replace("references/rules.md", "scripts/[name].py")))
     assert any("placeholder path" in e for e in errs), errs
+
+with tempfile.TemporaryDirectory() as t:
+    errs = check(make(t, skill=GOOD_SKILL.replace("## Done means", "## Outcome")))
+    assert any("Done means" in e for e in errs), errs
 
 print("test_validate: all assertions passed")

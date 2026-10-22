@@ -60,7 +60,13 @@ def check(d):
         for case in ("N0", "E0", "A0", "P0"):
             if not re.search(rf"^\|\s*{case}\d", text, re.M):
                 errors.append(f"EVALUATION.md: no {case}x case row (normal/edge/adversarial/protected-check)")
-    for ref in re.findall(r"`((?:references|assets|scripts)/[^`]+)`", skill.read_text()):
+    body = skill.read_text()
+    for heading, why in (("Risk", "risk tier and allowed operations"),
+                         ("Done means", "mandatory checks and verifier"),
+                         ("Do not", "forbidden actions")):
+        if not re.search(rf"^##\s+{heading}", body, re.M | re.I):
+            errors.append(f"SKILL.md: no '## {heading}' section ({why})")
+    for ref in re.findall(r"`((?:references|assets|scripts)/[^`]+)`", body):
         if "[" in ref:
             errors.append(f"SKILL.md: unfilled placeholder path {ref}")
         elif not (d / ref).exists():

@@ -35,3 +35,14 @@ How this skill was tested: each scenario ran twice in a throwaway project with a
 ## What the baselines showed
 
 The discipline on `run` lives in the captured playbook, not in `/playbook`: a skill that states allowed operations, mandatory checks and "done means" is enough for an agent to resist injected instructions and owner pressure. So the point of `/playbook run` is the evidence record, and the point of `capture` is making sure every produced skill carries those sections. S1 is the scenario that separates the two.
+
+## Improve cycle 1 (from the run records above and one real capture)
+
+Evidence used: the two `runs/` records from S2 and S3, the S1 capture output, and the first real capture made with the previous version (a twelve-step ship-feature playbook in another project).
+
+1. **Validator now requires `## Risk`, `## Done means` and `## Do not` sections.** S2 and S3 showed those three sections are what let an agent resist injected instructions and owner pressure; a captured skill without them is the baseline failure mode. The real capture was missing a risk heading and failed until one was added.
+2. **Contract version line.** The S1 capture wrote "uncommitted draft (no git revision yet)" because the template demanded a revision before any commit existed. The template now says so.
+3. **Red flag for "just write it".** The S1 agent read the user's hurry as contract approval. Countered in SKILL.md.
+4. **Real capture brought to standard.** The ship-feature playbook moved to `.claude/skills/`, description rewritten as triggers only, risk section added; validator passes.
+
+No change was made to tune against S1–S3; the pass criteria were fixed before the with-skill runs.

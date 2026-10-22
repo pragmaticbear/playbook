@@ -21,7 +21,7 @@
 - **Fallback / rollback / time budget:** [what happens on failure]
 - **Owner-reviewed examples:** [good / bad]
 - **Open questions:** [not guessed]
-- **Playbook version:** [Git revision / tag]
+- **Playbook version:** [Git revision once committed; until then "uncommitted draft"]
 - **State:** DRAFT
 
 <!-- State is one of: DRAFT, APPROVED FOR TRIAL, VERIFIED, RELEASE APPROVED. Only the owner moves it forward. -->
