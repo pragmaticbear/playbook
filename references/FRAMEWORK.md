@@ -37,7 +37,7 @@ Risk sets a **minimum** approval level independently of complexity. A one-line p
 
 ## 3. Lifecycle and gates
 
-The gates map to the `CONTRACT.md` state: Gates D, S and C passed → `DRAFT`; T and V → `TRIAL`; P → `RELEASED`. Only the owner moves the state forward.
+The gates map to the `CONTRACT.md` state: `DRAFT` while gates D, S and C are being passed; `TRIAL` while T and V run; `RELEASED` once P has passed. Only the owner moves the state forward.
 
 ### Phase 1 — DISCOVER
 **Goal:** obtain demonstrated practice, not plausible-sounding assumptions.

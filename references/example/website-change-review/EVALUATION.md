@@ -22,7 +22,7 @@
 ## Run-level measurements
 | Run ID | Agent/model & config | Playbook revision | Case | Outcome pass | Defects | Duration | Tokens/cost | Manual corrections | Side effects |
 |---|---|---|---|---|---|---|---|---|---|
-| none yet | | | | | | | | | |
+| 2026-10-22-example | Claude Code, default settings | `b71d04e` | N01-style live PR | INCOMPLETE (CI unreachable) | 1 blocker found | 14 min | not recorded | 0 | none |
 
 ## Promotion rules (fill before testing)
 - Minimum case success rate: 6 of 7 cases, all critical cases passing.

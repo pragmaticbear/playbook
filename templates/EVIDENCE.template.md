@@ -12,6 +12,7 @@
 - **Outcome state proof (e.g. URL/record/CI artifact/screenshot):** [ ]
 - **Unrun mandatory tests, anomalies and side effects:** [ ]
 - **Rollback location and instruction:** [ ]
+- **Waivers:** [owner waivers of a required check, with who and why; the state stays INCOMPLETE]
 
 ## Three separate states
 - [ ] `OBSERVED`: evidenced actions were taken (NOT equivalent to success).
