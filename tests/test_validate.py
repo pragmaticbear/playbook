@@ -1,4 +1,7 @@
 """Run: python3 tests/test_validate.py"""
+import contextlib
+import io
+import os
 import subprocess
 import sys
 import tempfile
@@ -151,9 +154,24 @@ with tempfile.TemporaryDirectory() as t:  # git runs in the skill's repo, not th
 
 with tempfile.TemporaryDirectory() as t:
     d = make(t)
-    assert main(["validate.py", str(d)]) == 0 and (d / "runs" / ".gitkeep").exists()
-    (d / "CONTRACT.md").unlink()
-    assert main(["validate.py", str(d)]) == 1
+    with contextlib.redirect_stdout(io.StringIO()):
+        assert main(["validate.py", str(d)]) == 0 and (d / "runs" / ".gitkeep").exists()
+        (d / "CONTRACT.md").unlink()
+        assert main(["validate.py", str(d)]) == 1
+
+for who in ("this agent", "The Worker", "worker", "self", "Agent", "TBD"):
+    with tempfile.TemporaryDirectory() as t:
+        errs = check(make(t, evaluation=EVAL.replace("| Yes | a |\n| A01", f"| Yes | {who} |\n| A01")))
+        assert errs == ["EVALUATION.md: E01 has no verifier"], (who, errs)
+
+with tempfile.TemporaryDirectory() as t:  # a symlinked skill dir is named by the link
+    real = make(t, skill=GOOD_SKILL.replace("name: good-job", "name: linked-job"))
+    os.rename(real, Path(t) / "store")
+    os.symlink(Path(t) / "store", Path(t) / "linked-job")
+    assert check(Path(t) / "linked-job") == [], check(Path(t) / "linked-job")
+
+with tempfile.TemporaryDirectory() as t:
+    assert check(make(t, skill=GOOD_SKILL + "Keywords per [RFC 2119].\n")) == []
 
 example = Path(__file__).resolve().parents[1] / "references" / "example" / "website-change-review"
 assert check(example) == [], check(example)

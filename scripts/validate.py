@@ -12,8 +12,9 @@ from pathlib import Path
 
 STATES = ("DRAFT", "TRIAL", "RELEASED")
 # [Something] that is not an inline or reference-style link, a link definition
-# or an [x] checkbox
-PLACEHOLDER = re.compile(r"(?<!\])\[(?![xX]\])([A-Za-z][^\]\n]*)\](?!\(|\[|:)")
+# or an [x] checkbox; template placeholders start lowercase, so [RFC 2119] passes
+PLACEHOLDER = re.compile(r"(?<!\])\[(?![xX]\])([a-z][^\]\n]*)\](?!\(|\[|:)")
+NO_VERIFIER = {"", "[ ]", "tbd", "this agent", "the worker", "worker", "self", "agent"}
 
 
 def frontmatter(text):
@@ -56,8 +57,8 @@ def check(d):
             errors.append(f"SKILL.md: name {name!r} must be lowercase letters, digits, hyphens")
         if len(name) > 64:
             errors.append(f"SKILL.md: name is {len(name)} chars, max 64")
-        if name != d.resolve().name:
-            errors.append(f"SKILL.md: name {name!r} != directory {d.resolve().name!r}")
+        if name != d.absolute().name:  # not resolve(): a symlinked dir keeps the link's name
+            errors.append(f"SKILL.md: name {name!r} != directory {d.absolute().name!r}")
         if re.fullmatch(r"[>|][-+]?", desc):
             errors.append("SKILL.md: multi-line descriptions are not supported by this validator")
         elif not desc.startswith("Use when"):
@@ -82,10 +83,10 @@ def check(d):
         text = evaluation.read_text()
         for case in "NEAP":
             if not re.search(rf"^\|\s*{case}\d+", text, re.M):
-                errors.append(f"EVALUATION.md: no {case}01-style case row (normal/edge/adversarial/protected-check)")
+                errors.append(f"EVALUATION.md: no {case}01-style case row (normal/edge/adversarial/protected-check; rows must start with `|`)")
         for row in re.findall(r"^\|\s*[NEAP]\d+.*$", text, re.M):
             cells = [c.strip() for c in row.strip().strip("|").split("|")]
-            if len(cells) < 6 or cells[5] in ("", "[ ]", "TBD", "tbd"):  # "open (blocks TRIAL)" is accepted
+            if len(cells) < 6 or cells[5].lower() in NO_VERIFIER:  # "open (blocks TRIAL)" is accepted
                 errors.append(f"EVALUATION.md: {cells[0]} has no verifier")
     for f in (skill, contract, evaluation):
         if f.exists():
