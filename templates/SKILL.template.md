@@ -1,6 +1,6 @@
 ---
 name: workflow-name
-description: Performs [a specific task]. Use when [concrete trigger and conditions]; do not use when [clear exclusion].
+description: Use when [concrete trigger and conditions]; not when [clear exclusion]. Triggers only — no summary of the steps.
 ---
 
 # Workflow Name

@@ -4,8 +4,6 @@
 
 Keep **expertise** as small, composable, versioned procedures (skills/playbooks); keep **execution** in the simplest runtime that performs the work correctly; keep **acceptance authority** outside the working agent. Skills teach an agent to do a task. They are not substitutes for tool permissions, objective checks or human approval.
 
-This framework is an **implementation recommendation**, not an assertion that Anthropic abandoned agents. Anthropic continues to support agents and multi-agent systems.
-
 ## 1. Decision rule: when to create a playbook
 
 Candidate qualifies when:
@@ -50,7 +48,7 @@ Interview one question per turn until the following coverage is complete:
 - Failure cases, examples, exceptions and rollback.
 - Frequency, owner and change-management expectations.
 
-**Gate D:** owner confirms this reflects the real job; unknowns are labeled and assigned. Eight questions are **not** an evidence threshold. Ask as few or as many as necessary.
+**Gate D:** owner confirms this reflects the real job; unknowns are labeled and assigned. Ask as few or as many questions as necessary.
 
 ### Phase 2 — SPECIFY
 Create `CONTRACT.md`: scope, named authority, allowable actions, expected outputs, acceptance checks, risk, fallback and side effects. Compare the candidate against a direct prompt or deterministic script.
@@ -131,7 +129,7 @@ Use the same representative inputs, a held-out set, and consistent grading. Run 
 
 ## 7. Adaptation to project tooling
 
-- **Claude Code:** publish approved playbooks in a supported Agent Skills location; use scripts and project files for checks.
+- **Claude Code:** playbooks live in `.claude/skills/<job>/` (project) or `~/.claude/skills/<job>/` (global); use scripts and project files for checks.
 - **Codex / Antigravity:** follow each harness's documented skill detection/install conventions; reuse the same portable source where supported, with a thin adapter where necessary.
 - **BearPaws or a similar skill system:** keep one canonical skill source and generate target-specific adapters; this framework adds proof/approval discipline rather than a rival orchestration engine.
 - **Topdrive or another orchestrator:** treat each task as a governed unit with a playbook version and immutable evidence; use extra agents for role handoff only when benefits/risk isolation justify them.
