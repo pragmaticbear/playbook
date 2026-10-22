@@ -29,6 +29,8 @@ Subagents used as a test subject, or as a tool the worker calls, do not make a j
 **Complexity** (S = simple fixed workflow, V = variable but bounded, E = exploratory/parallel).
 **Risk** (L = reversible/no sensitive data, M = external impact or material business decisions, H = sensitive/financial/security/publication/production impact).
 
+A sandbox is a target where no side effect reaches a real recipient, record or production system: a throwaway copy, a test channel, a staging project, a dry-run flag.
+
 Risk sets a **minimum** approval level independently of complexity. A one-line production change can be high risk. Extra model deliberation does not lower the risk level. A recurring send may run unattended only once the contract is `RELEASED`, and only under a written rule from the owner in the contract.
 
 | Risk | Action permission | Evidence required | Completion authority |
@@ -39,7 +41,7 @@ Risk sets a **minimum** approval level independently of complexity. A one-line p
 
 ## 3. Lifecycle and gates
 
-`CONTRACT.md` state: `DRAFT`: sandbox trials only; `TRIAL`: once the owner opens trials; `RELEASED`: once Gate P has passed. Only the owner moves the state forward.
+`CONTRACT.md` state: `DRAFT`: contract not approved; M/H trials in a sandbox only. `TRIAL`: contract approved by the owner; trials may use real inputs and read access, side effects still sandboxed. `RELEASED`: Gate P passed; side effects allowed as the contract permits. Only the owner moves the state forward.
 
 ### Phase 1 — DISCOVER
 **Goal:** obtain demonstrated practice, not plausible-sounding assumptions.
@@ -65,7 +67,7 @@ Create a portable `SKILL.md` with `name` and `description` frontmatter. Keep it 
 **Asset admission rules:**
 - Reused for multiple representative situations, or clearly needed for a recurring step.
 - Scrubbed of secrets, PII, ephemeral IDs, one-off customer content and draft-only decisions.
-- Reviewed by the owner; traceable to a source; safe to share in this project.
+- Reviewed by the owner or the named verifier; traceable to a source; safe to share in this project.
 - Appropriately named, with a short `INDEX.md` in large libraries.
 - Changed by review/PR, never by unreviewed automatic self-modification.
 - Examples taken from history alone are labelled "candidate, unreviewed" until the owner reviews them.

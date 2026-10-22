@@ -21,7 +21,7 @@
 - **Approval boundary:** posting the comment, any push, merge or deploy
 - **Fallback / rollback / time budget:** 20 minutes per PR; over budget or blocked → hand back to a human reviewer with partial matrix; the draft comment is deleted if not approved
 - **Owner-reviewed examples:** good: PR #412 review (caught a duplicate `signup_click`) | bad: PR #398 review (approved a page with an unlabelled icon button)
-- **Playbook version:** `b71d04e`
+- **Playbook version:** `6441387` (the commit that added this example)
 - **Evidence snapshot:** site repo at `3e9c1a7`
 - **State:** DRAFT
 
