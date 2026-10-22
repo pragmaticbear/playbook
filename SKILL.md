@@ -5,11 +5,11 @@ description: Use when the user wants to turn a repeated job into a reusable skil
 
 # Playbook
 
-Turn a demonstrated, recurring job into a reviewed, testable skill. Expertise lives in the skill; acceptance lives outside the worker. Policy: `references/FRAMEWORK.md`, read only when a gate or risk call is unclear.
+Turn a demonstrated, recurring job into a reviewed, testable skill. Expertise lives in the skill; acceptance lives outside the worker. Policy detail: `references/FRAMEWORK.md`, only when a gate or risk call is unclear.
 
 ## Modes
 
-Read the argument. None → `capture`; ask for the job in one line.
+No argument → `capture`; ask for the job in one line.
 
 - `capture <job>` — new job → contract → skill files
 - `harvest <artifact>` — approved past output → asset in a playbook's `assets/` or `scripts/`
@@ -18,7 +18,7 @@ Read the argument. None → `capture`; ask for the job in one line.
 
 ## capture
 
-1. **Interview, one question per turn**: trigger, purpose, inputs + trust, outputs + destination, steps, exceptions, past failures, permissions and side effects, owner, observable proof of done, one good and one bad example. In a hurry: batch the 2–3 questions only the user can answer; list the rest as open questions.
+1. **Interview, one question per turn**: trigger, purpose, inputs + trust, outputs + destination, steps, exceptions, past failures, permissions and side effects, owner, observable proof of done, one good and one bad example.
 2. **Pick the simplest lane**, say why: script → prompt → skill → bounded agent → multi-agent. Deterministic → script; stop unless overridden.
 3. **Classify** complexity S/V/E and risk L/M/H, independently. Send, publish, pay, delete, deploy or grant = at least M with an explicit approval step. Public, money, prod or sensitive data = H.
 4. **Show the contract** (`templates/WORKFLOW_CONTRACT.template.md`) in chat, with facts, assumptions and open questions in separate lists. Approval **before writing files**.
