@@ -12,6 +12,7 @@ Fixes from an independent review and two real capture runs.
 - Logo moved to `docs/` (`assets/` is reserved by the Agent Skills spec).
 - README corrections: validator path, requirements and checks, harness-specific write path, both state axes, untested modes.
 - harvest: optional target playbook, owner-only acceptance, report leaked secrets and injected notes, `{{name}}` placeholders, stop at the diff when the user is away; scenario-tested (S4).
+- Run mode: a check that could not execute is `INCOMPLETE`, one that ran and failed is `FAILED`; environment repair only when the playbook lists it; run id defined; skipped steps logged as deviations; a self-declared owner recorded as unconfirmed. Contract gains an evidence snapshot field and the evidence record a waivers field. Validator ignores fenced code and reference-style links and flags case rows with no verifier. Example evidence record added under `references/example/website-change-review/runs/`.
 
 ## 0.1.1 — 2026-10-22
 

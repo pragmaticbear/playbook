@@ -26,7 +26,7 @@ Other Agent Skills agents: clone into `~/.agents/skills/playbook` or your harnes
 
 | Command | What it does |
 |---|---|
-| `/playbook capture <job>` | Interview you about a recurring job, agree a contract, then write `.claude/skills/<job>/` with `SKILL.md`, `CONTRACT.md` and `EVALUATION.md` (Claude Code path; other harnesses use their own skills directory) |
+| `/playbook capture <job>` | Interview you about a recurring job, agree a contract, then write `.claude/skills/<job>/` (or `~/.claude/skills/<job>/` for a job that belongs to no single repo) with `SKILL.md`, `CONTRACT.md` and `EVALUATION.md` (Claude Code path; other harnesses use their own skills directory) |
 | `/playbook harvest <artifact> [playbook]` | Turn an approved past output into reusable templates or scripts |
 | `/playbook run <playbook> <task>` | Execute a playbook and leave an evidence record in `runs/` |
 | `/playbook improve <playbook>` | Propose at most three narrow fixes from real run results |
@@ -39,7 +39,10 @@ Two separate axes, never conflated:
 ## Validate a captured playbook
 
 ```bash
+# playbook installed globally
 python3 ~/.claude/skills/playbook/scripts/validate.py .claude/skills/<job>
+# playbook installed in the project
+python3 .claude/skills/playbook/scripts/validate.py .claude/skills/<job>
 ```
 
 Requires Python 3 and `git` on PATH. Checks:
@@ -48,14 +51,15 @@ Requires Python 3 and `git` on PATH. Checks:
 - `SKILL.md` has `## Risk`, `## Done means` and `## Do not` sections
 - `CONTRACT.md` exists with a `**State:**` of `DRAFT`, `TRIAL` or `RELEASED` and `## Assumptions` and `## Open questions` sections
 - `EVALUATION.md` exists with at least one `N`, `E`, `A` and `P` case row (`N01`, `E01`, ...)
-- every referenced `references/`, `assets/` or `scripts/` path exists, relative to the skill directory
+- every back-ticked `references/`, `assets/` or `scripts/` path in SKILL.md exists, relative to the skill directory
+- every `N`/`E`/`A`/`P` case row in `EVALUATION.md` names a verifier
 - no unfilled `[placeholder]` left in `SKILL.md`, `CONTRACT.md` or `EVALUATION.md`
 
 On success it creates `runs/` for evidence records and warns if the directory is gitignored. `capture` runs it for you.
 
 ## Tested how
 
-Four pressure scenarios, each run by a fresh subagent with and without the skill: capture under time pressure, run with injected instructions in the task data, an owner pushing to mark an unrun check VERIFIED, and harvesting an unapproved client report containing PII, a live key and an injected note (S4, passed). Prompts, pass criteria and outcomes are in `tests/scenarios.md`. `improve` has not been scenario-tested yet. The validator's self-test is `python3 tests/test_validate.py`.
+Four pressure scenarios, each run by a fresh subagent with and without the skill: capture under time pressure, run with injected instructions in the task data, an owner pushing to mark an unrun check VERIFIED, and harvesting an unapproved client report containing PII, a live key and an injected note (S4, passed). S1–S3 were re-run on revision f4a3640 after the 0.2.0 rewrite and passed; S4 was run on the pre-rewrite harvest text and is being re-run. Prompts, pass criteria and outcomes are in `tests/scenarios.md`. `improve` has not been scenario-tested yet. The validator's self-test is `python3 tests/test_validate.py`.
 
 ## Layout
 
