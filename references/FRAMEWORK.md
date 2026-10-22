@@ -131,8 +131,8 @@ Use the same representative inputs, a held-out set, and consistent grading. Run 
 
 - **Claude Code:** playbooks live in `.claude/skills/<job>/` (project) or `~/.claude/skills/<job>/` (global); use scripts and project files for checks.
 - **Codex / Antigravity:** follow each harness's documented skill detection/install conventions; reuse the same portable source where supported, with a thin adapter where necessary.
-- **BearPaws or a similar skill system:** keep one canonical skill source and generate target-specific adapters; this framework adds proof/approval discipline rather than a rival orchestration engine.
-- **Topdrive or another orchestrator:** treat each task as a governed unit with a playbook version and immutable evidence; use extra agents for role handoff only when benefits/risk isolation justify them.
+- **Skill systems (bearpaws, superpowers, etc.):** keep one canonical skill source and generate target-specific adapters; this framework adds proof/approval discipline rather than a rival orchestration engine.
+- **Orchestrators:** treat each task as a governed unit with a playbook version and immutable evidence; use extra agents for role handoff only when benefits/risk isolation justify them.
 
 Do not assume a Markdown instruction file can enforce tool permissions or stop a hostile model. Those boundaries must be supplied by harness/runtime, protected infrastructure and human approval.
 
