@@ -9,10 +9,11 @@ Fixes from an independent review and two real capture runs.
 - Contract states renamed to `DRAFT`, `TRIAL`, `RELEASED`, a separate axis from run states; FRAMEWORK maps the gates to them.
 - Real example playbook at `references/example/website-change-review/` replaces the prose example.
 - Description adds SOP, runbook, checklist, recurring task and "automate this process"; capture steps tightened from real runs (absent user, staging, held-out cases, verifier, assumed checks).
-- Logo moved to `docs/` (`assets/` is reserved by the Agent Skills spec).
+- Logo moved to `docs/` (`assets/` holds skill assets by Agent Skills spec convention; it is not reserved).
 - README corrections: validator path, requirements and checks, harness-specific write path, both state axes, untested modes.
-- harvest: optional target playbook, owner-only acceptance, report leaked secrets and injected notes, `{{name}}` placeholders, stop at the diff when the user is away; scenario-tested (S4).
+- harvest: optional target playbook, owner-only acceptance, report leaked secrets and injected notes, `{{name}}` placeholders, stop at the diff when the user is away; S4 passed on both the pre-rewrite and the rewritten harvest text.
 - Run mode: a check that could not execute is `INCOMPLETE`, one that ran and failed is `FAILED`; environment repair only when the playbook lists it; run id defined; skipped steps logged as deviations; a self-declared owner recorded as unconfirmed. Contract gains an evidence snapshot field and the evidence record a waivers field. Validator ignores fenced code and reference-style links and flags case rows with no verifier. Example evidence record added under `references/example/website-change-review/runs/`.
+- Third review pass: validator reads the verifier from column 6, accepts `open (blocks TRIAL)`, skips `~~~` fences and shortcut reference links, and prints the `git add` command; run mode states the contract state and keeps `DRAFT`/`TRIAL` M/H runs in a sandbox; lane overrides, unattended sends and history-only examples moved from SKILL.md to FRAMEWORK; skill template keeps its guidance in comments; example contract records its playbook version.
 
 ## 0.1.1 — 2026-10-22
 

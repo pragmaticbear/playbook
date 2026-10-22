@@ -4,7 +4,7 @@
 
 An [Agent Skill](https://agentskills.io/specification) that turns a repeated job into a reviewed, testable skill of its own. Expertise lives in the skill; acceptance lives outside the agent that does the work.
 
-Works with Claude Code as `/playbook`, and with any agent that loads `SKILL.md` from a skills directory (Codex, OpenCode, Devin, and others).
+Built for Claude Code, where it runs as `/playbook`. Other Agent Skills harnesses (Codex, OpenCode, Devin, and others) can load `SKILL.md`, but `capture` and `run` use Claude Code's skills paths (`.claude/skills/`, `~/.claude/skills/`) unless you adapt them.
 
 ## Install
 
@@ -14,10 +14,12 @@ Claude Code, global:
 git clone https://github.com/pragmaticbear/playbook ~/.claude/skills/playbook
 ```
 
-Claude Code, one project:
+Update: `git -C ~/.claude/skills/playbook pull`.
+
+Claude Code, one project (a plain clone inside your repo adds a gitlink, not the files, so drop the nested `.git` or copy the files instead):
 
 ```bash
-git clone https://github.com/pragmaticbear/playbook .claude/skills/playbook
+git clone --depth 1 https://github.com/pragmaticbear/playbook .claude/skills/playbook && rm -rf .claude/skills/playbook/.git
 ```
 
 Other Agent Skills agents: clone into `~/.agents/skills/playbook` or your harness's skills directory.
@@ -47,19 +49,19 @@ python3 .claude/skills/playbook/scripts/validate.py .claude/skills/<job>
 
 Requires Python 3 and `git` on PATH. Checks:
 
-- frontmatter: `name` is lowercase-hyphenated, at most 64 chars and matches the folder; `description` at most 1024 chars and starts with "Use when"
+- frontmatter: `name` is lowercase-hyphenated, at most 64 chars and matches the folder; `description` at most 1024 chars and starts with "Use when"; multi-line (`>`/`|`) descriptions are rejected
 - `SKILL.md` has `## Risk`, `## Done means` and `## Do not` sections
 - `CONTRACT.md` exists with a `**State:**` of `DRAFT`, `TRIAL` or `RELEASED` and `## Assumptions` and `## Open questions` sections
 - `EVALUATION.md` exists with at least one `N`, `E`, `A` and `P` case row (`N01`, `E01`, ...)
 - every back-ticked `references/`, `assets/` or `scripts/` path in SKILL.md exists, relative to the skill directory
-- every `N`/`E`/`A`/`P` case row in `EVALUATION.md` names a verifier
+- each case row in `EVALUATION.md` names a verifier (`open (blocks TRIAL)` is accepted)
 - no unfilled `[placeholder]` left in `SKILL.md`, `CONTRACT.md` or `EVALUATION.md`
 
-On success it creates `runs/` for evidence records and warns if the directory is gitignored. `capture` runs it for you.
+On success it creates `runs/` for evidence records and prints `stage with: git add <dir>` (with `-f` when the directory is gitignored). `capture` runs it for you.
 
 ## Tested how
 
-Four pressure scenarios, each run by a fresh subagent with and without the skill: capture under time pressure, run with injected instructions in the task data, an owner pushing to mark an unrun check VERIFIED, and harvesting an unapproved client report containing PII, a live key and an injected note (S4, passed). S1–S3 were re-run on revision f4a3640 after the 0.2.0 rewrite and passed; S4 was run on the pre-rewrite harvest text and is being re-run. Prompts, pass criteria and outcomes are in `tests/scenarios.md`. `improve` has not been scenario-tested yet. The validator's self-test is `python3 tests/test_validate.py`.
+Four pressure scenarios, each run by a fresh subagent with and without the skill: capture under time pressure, run with injected instructions in the task data, an owner pushing to mark an unrun check VERIFIED, and harvesting an unapproved client report containing PII, a live key and an injected note (S4). S4 was re-run on c9e7608, the current harvest text, and passed. S1–S3 were re-run on f4a3640 and passed; that was before the latest run-mode changes. Prompts, pass criteria and outcomes are in `tests/scenarios.md`. `improve` has not been scenario-tested, and evidence records are not checked by the validator. The validator's self-test is `python3 tests/test_validate.py`.
 
 ## Layout
 
@@ -67,6 +69,7 @@ Four pressure scenarios, each run by a fresh subagent with and without the skill
 - `references/FRAMEWORK.md` — the full policy: lanes, risk tiers, gates, verification rules
 - `references/example/website-change-review/` — a complete captured playbook that passes the validator
 - `templates/` — contract, skill, evaluation and evidence templates
+- `docs/` — the logo; `assets/` is left for skill assets by Agent Skills spec convention (a convention, not a reserved name)
 - `scripts/validate.py` — validator for captured playbooks
 - `tests/` — validator self-test and the pressure scenarios
 
