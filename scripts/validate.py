@@ -5,6 +5,7 @@ Checks SKILL.md frontmatter, required companion files, referenced paths,
 and creates runs/ for evidence records. Exit 1 on any error.
 """
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -83,6 +84,10 @@ def main(argv):
     for e in errors:
         print(f"ERROR {e}")
     if not errors:
+        ignored = subprocess.run(["git", "check-ignore", "-q", str(d / "SKILL.md")],
+                                 capture_output=True).returncode == 0
+        if ignored:
+            print(f"WARN {d}: gitignored; `git add -f {d}` to track it")
         runs = d / "runs"
         runs.mkdir(exist_ok=True)
         (runs / ".gitkeep").touch()

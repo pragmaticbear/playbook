@@ -22,7 +22,7 @@ No argument → `capture`; ask for the job in one line.
 2. **Pick the simplest lane**, say why: script → prompt → skill → bounded agent → multi-agent. Deterministic → script; stop unless overridden.
 3. **Classify** complexity S/V/E and risk L/M/H, independently. Send, publish, pay, delete, deploy or grant = at least M with an explicit approval step. Public, money, prod or sensitive data = H.
 4. **Show the contract** (`templates/WORKFLOW_CONTRACT.template.md`) in chat, with facts, assumptions and open questions in separate lists. Approval **before writing files**.
-5. **Write** `.claude/skills/<job>/` (or `~/.claude/skills/<job>/` if global): `SKILL.md`, `CONTRACT.md`, `EVALUATION.md` from `templates/`. Add `references/`, `assets/`, `scripts/` only when reused. Description = triggers only.
+5. **Write** `.claude/skills/<job>/` (or `~/.claude/skills/<job>/` if global): `SKILL.md`, `CONTRACT.md`, `EVALUATION.md` from `templates/`. Add `references/`, `assets/`, `scripts/` only when reused. Description = triggers only. If `.claude/` is gitignored there, `git add -f` the skill dir and say so.
 6. **Eval plan**: ≥1 normal, 1 edge, 1 injected-instruction, 1 "required check unavailable → INCOMPLETE". Mark held-out cases. Ask who verifies (not the worker) and how.
 7. **Validate and report**: run `python3 scripts/validate.py <dir>`, fix what it flags. Report files written, open risks, how to trial, state `DRAFT`. It loads at once; `CONTRACT.md` state gates promotion, never you.
 
