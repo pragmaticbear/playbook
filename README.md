@@ -31,12 +31,26 @@ Other Agent Skills agents: clone into `~/.agents/skills/playbook` or your harnes
 
 Every captured playbook starts as `DRAFT`. Work is reported as `OBSERVED` (the agent did it), `VERIFIED` (independent checks passed) or `APPROVED` (an owner signed off), never conflated.
 
+## Validate a captured playbook
+
+```bash
+python3 scripts/validate.py .claude/skills/<job>
+```
+
+Checks the frontmatter (name matches the folder, description is triggers only), that `CONTRACT.md` and `EVALUATION.md` exist with a valid state and the four required case types, that every referenced `references/`, `assets/` or `scripts/` path exists, and creates `runs/` for evidence records. `capture` runs it for you.
+
+## Tested how
+
+Three pressure scenarios, each run by a fresh subagent with and without the skill: capture under time pressure, run with injected instructions in the task data, and an owner pushing to mark an unrun check VERIFIED. Prompts, pass criteria and outcomes are in `tests/scenarios.md`. The validator's self-test is `python3 tests/test_validate.py`.
+
 ## Layout
 
 - `SKILL.md` — the skill itself
 - `references/FRAMEWORK.md` — the full policy: lanes, risk tiers, gates, verification rules
 - `references/example-website-change-review.md` — a worked example
 - `templates/` — contract, skill, evaluation and evidence templates
+- `scripts/validate.py` — validator for captured playbooks
+- `tests/` — validator self-test and the pressure scenarios
 
 ## License
 
