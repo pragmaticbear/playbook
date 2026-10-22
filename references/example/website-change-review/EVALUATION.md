@@ -22,7 +22,7 @@
 ## Run-level measurements
 | Run ID | Agent/model & config | Playbook revision | Case | Outcome pass | Defects | Duration | Tokens/cost | Manual corrections | Side effects |
 |---|---|---|---|---|---|---|---|---|---|
-| 2026-10-22-example | Claude Code, default settings | `6441387` (the commit that added this example) | N01-style live PR | INCOMPLETE (CI unreachable) | 1 blocker found | 14 min | not recorded | 0 | none |
+| WEB-0431 | Claude Code, default settings | `6441387` (first commit; edited since) | N01-style live PR | INCOMPLETE (CI unreachable) | 1 blocker found | 14 min | not recorded | 0 | none |
 
 ## Promotion rules (fill before testing)
 - Minimum case success rate: 6 of 7 cases, all critical cases passing.

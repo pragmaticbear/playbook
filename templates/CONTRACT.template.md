@@ -21,7 +21,7 @@
 - **Approval boundary:** [what requires an explicit yes]
 - **Fallback / rollback / time budget:** [what happens on failure]
 - **Owner-reviewed examples:** [good / bad]
-- **Playbook version:** [git revision once committed; until then none (uncommitted)]
+- **Playbook version:** [git revision once committed; until then none (uncommitted), or no repo]
 - **Evidence snapshot:** [project revision the examples were taken from; "no commits" if none, "no repo" if the job belongs to none]
 - **State:** DRAFT
 

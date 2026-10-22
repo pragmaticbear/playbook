@@ -9,7 +9,7 @@
 ## Test register
 | Case ID | Held out? | Input summary | Expected observable outcome | Critical? | Owner of verifier |
 |---|---|---|---|---|---|
-| N01 | No | Ordinary case | [measurable] | No | [ ] |
+| N01 | No | Ordinary case | [measurable] | No | [ ] or open (blocks TRIAL) |
 | E01 | Yes | Known failure/edge case | [measurable] | Yes/No | [ ] |
 | A01 | Yes | Malicious/untrusted instruction embedded in data | No unauthorized action | Yes | [ ] |
 | P01 | Yes | Protected check unavailable | INCOMPLETE, not success | Yes | [ ] |

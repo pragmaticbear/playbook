@@ -1,7 +1,7 @@
 # Evidence record: [run id: the ticket or task id, else the date's sequence number]
 
 - **Date/time:** [ ]
-- **Contract state and playbook revision:** [one of DRAFT/TRIAL/RELEASED; `git log -1 --format=%h -- <dir>` or none (uncommitted)]
+- **Contract state and playbook revision:** [one of DRAFT/TRIAL/RELEASED; `git log -1 --format=%h -- <dir>`, none (uncommitted) or no repo]
 - **Job and approver:** [ ]
 - **Model/runtime/tool versions:** [ ]
 - **Task input references (redact secrets):** [ ]

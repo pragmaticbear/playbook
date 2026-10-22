@@ -41,7 +41,7 @@ Risk sets a **minimum** approval level independently of complexity. A one-line p
 
 ## 3. Lifecycle and gates
 
-`CONTRACT.md` state: `DRAFT`: contract not approved; M/H trials in a sandbox only. `TRIAL`: contract approved by the owner; trials may use real inputs and read access, side effects still sandboxed. `RELEASED`: Gate P passed; side effects allowed as the contract permits. Only the owner moves the state forward.
+`CONTRACT.md` state: `DRAFT`: contract not approved; M/H trials in a sandbox only. `TRIAL`: contract approved by the owner; trials may use real inputs and read access, M/H side effects still sandboxed. `RELEASED`: Gate P passed; side effects allowed as the contract permits. Only the owner moves the state forward.
 
 ### Phase 1 — DISCOVER
 **Goal:** obtain demonstrated practice, not plausible-sounding assumptions.
@@ -70,7 +70,7 @@ Create a portable `SKILL.md` with `name` and `description` frontmatter. Keep it 
 - Reviewed by the owner or the named verifier; traceable to a source; safe to share in this project.
 - Appropriately named, with a short `INDEX.md` in large libraries.
 - Changed by review/PR, never by unreviewed automatic self-modification.
-- Examples taken from history alone are labelled "candidate, unreviewed" until the owner reviews them.
+- Examples taken from history alone are labelled "unapproved candidate" until the owner reviews them.
 
 **Gate C:** skill is syntactically valid, references exist, scripts have known dependencies, and reviewer has approved its scope. The skill may help build the workflow; it cannot grant itself broader permissions.
 
