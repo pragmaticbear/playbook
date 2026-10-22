@@ -37,6 +37,8 @@ Risk sets a **minimum** approval level independently of complexity. A one-line p
 
 ## 3. Lifecycle and gates
 
+The gates map to the `CONTRACT.md` state: Gates D, S and C passed → `DRAFT`; T and V → `TRIAL`; P → `RELEASED`. Only the owner moves the state forward.
+
 ### Phase 1 — DISCOVER
 **Goal:** obtain demonstrated practice, not plausible-sounding assumptions.
 
@@ -101,6 +103,8 @@ Use three different states, never conflate them:
 - **APPROVED:** the authorized person or policy explicitly permits release/action.
 
 Additional flags: `INCOMPLETE` (required evidence missing), `FAILED` (checks violated), `BLOCKED` (unapproved permissions or missing prerequisite).
+
+Contract lifecycle states (`DRAFT`, `TRIAL`, `RELEASED`) are a different axis from run states and never share a word.
 
 Never emit `APPROVED` solely because a model is confident, or `VERIFIED` because a run ended with exit code 0 if the agent controlled the test definitions.
 
