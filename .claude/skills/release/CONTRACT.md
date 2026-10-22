@@ -47,7 +47,7 @@
 - Q5 Is editing a published release ever allowed (`immutable: false` today)?
 - Q6 Anything outside the repo on release: announcement, docs, install instructions?
 
-- **Playbook version:** `27ff9c3`
+- **Playbook version:** `27ff9c3` (first tracked commit; edited since)
 - **Evidence snapshot:** `1c145e8` (v0.1.1, the second demonstrated release)
 - **State:** DRAFT
 
