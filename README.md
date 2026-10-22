@@ -22,6 +22,8 @@ Claude Code, one project (a plain clone inside your repo adds a gitlink, not the
 git clone --depth 1 https://github.com/pragmaticbear/playbook .claude/skills/playbook && rm -rf .claude/skills/playbook/.git
 ```
 
+Update a project copy by removing `.claude/skills/playbook` and re-running the clone line.
+
 Other Agent Skills agents: clone into `~/.agents/skills/playbook` or your harness's skills directory.
 
 ## Use
@@ -36,7 +38,7 @@ Other Agent Skills agents: clone into `~/.agents/skills/playbook` or your harnes
 
 Two separate axes, never conflated:
 
-- **Contract state** (in `CONTRACT.md`, moved only by the owner): `DRAFT` → `TRIAL` → `RELEASED`. Every captured playbook starts as `DRAFT`.
+- **Contract state** (in `CONTRACT.md`, moved only by the owner): `DRAFT` → `TRIAL` → `RELEASED` (edit the `**State:**` line in `CONTRACT.md`: `TRIAL` once you approve the contract, `RELEASED` after the trial gate). Every captured playbook starts as `DRAFT`.
 - **Run state** (in each evidence record): `OBSERVED` (the agent did it), `VERIFIED` (independent checks passed) or `APPROVED` (an owner signed off), plus `INCOMPLETE`, `FAILED`, `BLOCKED`.
 
 ## Validate a captured playbook
@@ -55,20 +57,20 @@ Requires Python 3 and `git` on PATH. Checks:
 - `CONTRACT.md` exists with a `**State:**` of `DRAFT`, `TRIAL` or `RELEASED` and `## Assumptions` and `## Open questions` sections
 - `EVALUATION.md` exists with at least one `N`, `E`, `A` and `P` case row (`N01`, `E01`, ...)
 - every back-ticked `references/`, `assets/` or `scripts/` path in SKILL.md exists, relative to the skill directory
-- each case row in `EVALUATION.md` names a verifier (`open (blocks TRIAL)` is accepted)
-- no unfilled `[placeholder]` left in `SKILL.md`, `CONTRACT.md` or `EVALUATION.md`
+- each case row in `EVALUATION.md` names a verifier (`open (blocks TRIAL)` is accepted; the worker, `self` or a bare `[ ]` is rejected). The validator cannot tell whether a verifier is independent; `owner` is accepted.
+- no lowercase `[placeholder]` outside code spans and links in `SKILL.md`, `CONTRACT.md` or `EVALUATION.md`
 
-On success it creates `runs/` for evidence records and prints `stage with: git add <dir>` (with `-f` when the directory is gitignored). `capture` runs it for you.
+On success it creates `runs/` for evidence records and prints `stage with: git add <dir>` (with `-f` when the directory is gitignored; skipped outside a git repository). `capture` runs it for you.
 
 ## Tested how
 
-Four pressure scenarios, each run by a fresh subagent with and without the skill: capture under time pressure (S1), run with injected instructions in the task data (S2), an owner pushing to mark an unrun check VERIFIED (S3), and harvesting an unapproved client report containing PII, a live key and an injected note (S4). S1–S3 passed on f4a3640; S2 and S3 were re-run on 7bfdf0f after the run-mode rewrite and passed; S4 passed on c9e7608. Prompts, pass criteria and outcomes are in `tests/scenarios.md`. An `improve` scenario is pending, and evidence records are not checked by the validator. The validator's self-test is `python3 tests/test_validate.py`.
+Five pressure scenarios, each run by a fresh subagent with and without the skill: capture under time pressure (S1), run with injected instructions in the task data (S2), an owner pushing to mark an unrun check VERIFIED (S3), harvesting an unapproved client report containing PII, a live key and an injected note (S4), and improving a playbook under pressure to "fix the check" (S5). Every scenario in `tests/scenarios.md` is re-run on the exact revision that is released; the results name that revision. Prompts, pass criteria and outcomes are in `tests/scenarios.md`. Evidence records are not checked by the validator. The validator's self-test is `python3 tests/test_validate.py`.
 
 ## Layout
 
 - `SKILL.md` — the skill itself
 - `references/FRAMEWORK.md` — the full policy: lanes, risk tiers, gates, verification rules
-- `references/example/website-change-review/` — a complete captured playbook that passes the validator
+- `references/example/website-change-review/` — a complete illustrative playbook that passes the validator
 - `templates/` — `CONTRACT.template.md`, `SKILL.template.md`, `EVALUATION.template.md`, `EVIDENCE.template.md`
 - `docs/` — the logo; no `assets/` in this repo; captured playbooks use `assets/` for templates
 - `scripts/validate.py` — validator for captured playbooks

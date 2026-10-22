@@ -86,7 +86,8 @@ def check(d):
                 errors.append(f"EVALUATION.md: no {case}01-style case row (normal/edge/adversarial/protected-check; rows must start with `|`)")
         for row in re.findall(r"^\|\s*[NEAP]\d+.*$", text, re.M):
             cells = [c.strip() for c in row.strip().strip("|").split("|")]
-            if len(cells) < 6 or cells[5].lower() in NO_VERIFIER:  # "open (blocks TRIAL)" is accepted
+            # "open (blocks TRIAL)" is accepted; the template hint "[ ] or open (...)" is not
+            if len(cells) < 6 or cells[5].lower() in NO_VERIFIER or cells[5].startswith("[ ]"):
                 errors.append(f"EVALUATION.md: {cells[0]} has no verifier")
     for f in (skill, contract, evaluation):
         if f.exists():
@@ -109,12 +110,14 @@ def check(d):
 
 
 def gitignored(path):
+    """True/False, or None when the path is not inside a git repository."""
     path = path.resolve()
     try:  # run inside the skill's repo, wherever the validator is called from
-        return subprocess.run(["git", "check-ignore", "-q", str(path)],
-                              capture_output=True, cwd=path.parent.parent).returncode == 0
+        code = subprocess.run(["git", "check-ignore", "-q", str(path)],
+                              capture_output=True, cwd=path.parent.parent).returncode
     except FileNotFoundError:  # no git on PATH
         return False
+    return None if code == 128 else code == 0
 
 
 def main(argv):
@@ -132,7 +135,9 @@ def main(argv):
             print(f"created {runs}/")
         (runs / ".gitkeep").touch()
         print(f"OK {d}: valid, runs/ ready")
-        print(f"stage with: git add {'-f ' if gitignored(d / 'SKILL.md') else ''}{d}")
+        ignored = gitignored(d / "SKILL.md")
+        if ignored is not None:  # None: not in a git repository, nothing to stage
+            print(f"stage with: git add {'-f ' if ignored else ''}{d}")
     return 1 if errors else 0
 
 

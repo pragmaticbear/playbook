@@ -173,6 +173,21 @@ with tempfile.TemporaryDirectory() as t:  # a symlinked skill dir is named by th
 with tempfile.TemporaryDirectory() as t:
     assert check(make(t, skill=GOOD_SKILL + "Keywords per [RFC 2119].\n")) == []
 
+with tempfile.TemporaryDirectory() as t:
+    errs = check(make(t, evaluation=EVAL.replace("| No | a |\n| E01", "| No | [ ] or open (blocks TRIAL) |\n| E01")))
+    assert errs == ["EVALUATION.md: N01 has no verifier"], errs
+
+with tempfile.TemporaryDirectory() as t:  # outside any repo: no "stage with" line
+    if subprocess.run(["git", "rev-parse"], cwd=t, capture_output=True).returncode == 0:
+        print("note: temp dir is inside a git repository; skipped the no-repo check")
+    else:
+        d = make(t)
+        assert gitignored(d / "SKILL.md") is None
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            assert main(["validate.py", str(d)]) == 0
+        assert "stage with" not in out.getvalue(), out.getvalue()
+
 example = Path(__file__).resolve().parents[1] / "references" / "example" / "website-change-review"
 assert check(example) == [], check(example)
 
