@@ -3,7 +3,7 @@
 - **Owner/approver:** Assumed: the playbook repo owner (git author Brandon Fitzgerald). Not confirmed.
 - **Trigger / frequency:** "Whenever the skill changes" (user's words). Done once, 2026-10-22. Which changes count is open (Q3).
 - **Business outcome:** A change to `/playbook` is shown, with evidence, to still pass every pressure scenario in `tests/scenarios.md` (or shown to regress) before the change is relied on.
-- **Scope / exclusions:** In scope: re-running every scenario in `tests/scenarios.md` with a fresh subagent per scenario in a throwaway fixture; grading against the pass criteria; an evidence record; a proposed update to `tests/scenarios.md`. Out of scope: writing new scenarios; fixing the skill (that is `/playbook improve`); testing captured playbooks other than `/playbook`.
+- **Scope / exclusions:** In scope: re-running S1–S3 from `tests/scenarios.md` (Q7 for S4–S5) with a fresh subagent per scenario in a throwaway fixture; grading against the pass criteria; an evidence record; a proposed update to `tests/scenarios.md`. Out of scope: writing new scenarios; fixing the skill (that is `/playbook improve`); testing captured playbooks other than `/playbook`.
 - **Complexity:** V — fixed scenario list, but S3 is multi-turn, grading needs judgment, and subagent behaviour varies.
 - **Risk:** L — everything written is local and reversible (throwaway fixture, a `runs/` record, a proposed diff). The one thing that would raise it: running a scenario in a real project, which the skill forbids.
 - **Baseline solution:** Doing it by hand, as on 2026-10-22: build a fixture, dispatch subagents, read the reports, write results into `tests/scenarios.md`. No evidence record beyond the prose in `tests/scenarios.md`.
