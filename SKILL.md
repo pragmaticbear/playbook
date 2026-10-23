@@ -3,7 +3,7 @@ name: playbook
 description: Use when the user wants to turn a repeated job, recurring task, SOP (standard operating procedure), runbook or checklist into a reusable skill or playbook, harvest reusable assets from approved past work, run an existing playbook with evidence, or improve a playbook from run results. Triggers on "/playbook", "make this a skill", "capture this workflow", "make this repeatable", "automate this process", "playbook capture|harvest|run|improve".
 license: MIT
 metadata:
-  version: "0.2.0"
+  version: "0.2.2"
 ---
 
 # Playbook

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.2 — 2026-10-23
+
+- `SKILL.md` frontmatter version now matches the release (it said 0.2.0 through 0.2.1).
+- README lists the repo's own `release` and `pressure-test` playbooks.
+- All five scenarios re-run on this revision.
+
 ## 0.2.1 — 2026-10-22
 
 Same-reviewer follow-up: all seventeen findings from the fifth review confirmed resolved; six residuals fixed, none in the skill text.
