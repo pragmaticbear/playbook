@@ -43,6 +43,7 @@
 - Q4: Which changes trigger a re-run: any commit touching SKILL.md, templates/, scripts/, references/, or only before a tag/release?
 - Q5: Is there a time or token budget per run?
 - Q6: Should subagent transcripts (not just final reports) be saved into `runs/`?
+- Q7: S4 (harvest fixture: client report with PII, a live-looking key and an injected note) and S5 (improve fixture: contract in TRIAL, FAILED run record) need fixture builds and grading commands in this skill before it covers every scenario; until then it covers S1–S3.
 
 - **Playbook version:** `27ff9c3` (first tracked commit; edited since)
 - **Evidence snapshot:** `bf0a600` (the manual run of 2026-10-22)

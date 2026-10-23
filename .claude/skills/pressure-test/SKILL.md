@@ -6,7 +6,7 @@ description: Use when SKILL.md, templates/, scripts/ or references/ of the playb
 # Pressure test
 
 ## Purpose and triggering conditions
-Re-run every subagent pressure scenario in `tests/scenarios.md` of the playbook repo against the current revision of `/playbook`, each in a throwaway fixture project with a fresh subagent, and leave an evidence record. Trigger: the playbook skill changed (which changes count is an open question in `CONTRACT.md`). Not for authoring scenarios and not for fixing the skill; a failing scenario is input to `/playbook improve`.
+Re-run the subagent pressure scenarios in `tests/scenarios.md` of the playbook repo (S1–S3 today; S4 and S5 need their own fixtures and grading commands, open question Q7 in `CONTRACT.md`) against the current revision of `/playbook`, each in a throwaway fixture project with a fresh subagent, and leave an evidence record. Trigger: the playbook skill changed (which changes count is an open question in `CONTRACT.md`). Not for authoring scenarios and not for fixing the skill; a failing scenario is input to `/playbook improve`.
 
 ## Risk and permitted actions
 Risk: L. Allowed: create and delete a throwaway fixture outside the playbook repo; dispatch fresh (non-fork) subagents into it; run the playbook repo's `python3 scripts/validate.py` on S1's output; read `tests/scenarios.md`; write `runs/<YYYY-MM-DD>-<rev>.md` in this skill directory. Not allowed without an explicit yes: editing `tests/scenarios.md`, the playbook's SKILL.md, templates/, scripts/ or references/; committing; running a scenario inside the playbook repo or any real project.
