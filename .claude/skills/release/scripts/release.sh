@@ -17,6 +17,7 @@ git rev-parse -q --verify "refs/tags/$tag" >/dev/null && fail "tag $tag exists l
 notes=$(awk -v v="$ver" '/^## /{p=($2==v)} p' CHANGELOG.md)
 [ -n "$notes" ] || fail "no '## $ver' section in CHANGELOG.md"
 python3 tests/test_validate.py >/dev/null || fail "tests/test_validate.py failed"  # assumed check, CONTRACT.md A4
+grep -q "version: \"$ver\"" SKILL.md || fail "repo-root SKILL.md metadata.version is not $ver"
 
 echo "== $tag on $(git rev-parse --short HEAD); tag message: $msg"
 echo "== release notes (CHANGELOG.md section, CONTRACT.md A2):"; echo "$notes"
