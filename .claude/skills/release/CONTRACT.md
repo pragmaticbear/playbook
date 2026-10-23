@@ -49,6 +49,6 @@
 
 - **Playbook version:** `27ff9c3` (first tracked commit; edited since)
 - **Evidence snapshot:** `1c145e8` (v0.1.1, the second demonstrated release)
-- **State:** DRAFT
+- **State:** RELEASED
 
 <!-- State is one of: DRAFT, TRIAL, RELEASED. Only the owner moves it forward. -->
