@@ -75,7 +75,7 @@ Five pressure scenarios, each run by a fresh subagent (S1–S3 with and without 
 - `docs/` — the logo; no `assets/` in this repo; captured playbooks use `assets/` for templates
 - `scripts/validate.py` — validator for captured playbooks
 - `tests/` — validator self-test and the pressure scenarios
-- `.claude/skills/release/`, `.claude/skills/pressure-test/` — the repo's own playbooks, captured with `/playbook` and kept as `DRAFT` dogfood; `release` cut v0.2.1 and holds its evidence record
+- `.claude/skills/release/`, `.claude/skills/pressure-test/` — the repo's own playbooks, captured with `/playbook` and kept as `DRAFT` dogfood; `release` cuts the versions and holds their evidence records
 
 ## Security
 

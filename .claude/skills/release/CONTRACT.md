@@ -3,7 +3,7 @@
 - **Owner/approver:** Brandon Fitzgerald (GitHub `pragmaticbear`); tagger and release author on both releases.
 - **Trigger / frequency:** the owner asks to cut a version. Twice on 2026-10-22; no cadence established.
 - **Business outcome:** a fixed revision users can clone by tag (README installs by cloning) and a public record of what changed (A1).
-- **Scope / exclusions:** in: changelog entry, annotated tag, push, GitHub release, for this repo. Out: other repos, registries, announcements, version strings anywhere else (none exist), editing or deleting published releases.
+- **Scope / exclusions:** in: changelog entry, annotated tag, push, GitHub release, for this repo. Out: other repos, registries, announcements, version strings anywhere other than `CHANGELOG.md` and `SKILL.md` `metadata.version`, editing or deleting published releases.
 - **Complexity:** S (fixed sequence).
 - **Risk:** H (public publication; tags and releases are visible immediately).
 - **Baseline solution:** owner by hand, with `git tag` and `gh release create`.
@@ -24,7 +24,7 @@
 ## Facts (from `git log`, `git tag`, `gh release view`, `CHANGELOG.md`)
 - F1 Tags are annotated, `v` + semver, point at `main` commits, pushed to origin (annotated objects exist on the remote).
 - F2 Release title = tag; not draft; not prerelease; target `main`; created 3–5 seconds after the tag.
-- F3 Changelog heading `## X.Y.Z — YYYY-MM-DD` (en dash), newest first, one summary sentence then bullets. No other file carries the version.
+- F3 Changelog heading `## X.Y.Z — YYYY-MM-DD` (en dash), newest first, one summary sentence then bullets. `SKILL.md` frontmatter `metadata.version` also carries it (missed until 0.2.2; 0.2.1 shipped saying 0.2.0).
 - F4 Notes: v0.1.0 = full `CHANGELOG.md` file; v0.1.1 = one paragraph, "See CHANGELOG.md."
 - F5 Tag messages: "First public release", "Improve cycle 1".
 - F6 No bump commit. v0.1.1's changelog entry is in the tagged commit (1c145e8); v0.1.0's was added earlier (cd090fa), tag on 8ba07ff.

@@ -14,14 +14,14 @@ Trusted inputs: the owner's chat message, `git log`, `git tag`, `gh release list
 
 ## Inputs
 - Version `X.Y.Z`: given by the owner or proposed by you (semver; see Decision).
-- `CHANGELOG.md`: the only place the version string lives in this repo.
+- `CHANGELOG.md` (the `## X.Y.Z` section) and `SKILL.md` frontmatter `metadata.version`: the two places the version string lives.
 - Repo state: `git status`, `git log origin/main..HEAD`, `git tag -l`, `gh release list`.
 
 ## Procedure
 1. State risk H, the allowed operations and the required checks (Done means).
 2. Preconditions, all observable: on `main`; working tree clean; every commit to be released is on `origin/main` (true for both released commits); `vX.Y.Z` absent locally and on origin; `gh auth status` ok.
 3. Propose the version (Decision). Unsure → ask, do not guess.
-4. Changelog entry at the top of `CHANGELOG.md`, directly under `# Changelog`: `## X.Y.Z — YYYY-MM-DD` (en dash), one summary sentence, then bullets of user-visible changes taken from `git log <last-tag>..HEAD`. Commit it (v0.1.1 put it in the final change commit, v0.1.0 in an earlier one; neither used a separate bump commit). Push `main`.
+4. Set `metadata.version` in `SKILL.md` to `X.Y.Z` (a skill-text change: the scenarios in `tests/scenarios.md` re-run on that revision before tagging). Changelog entry at the top of `CHANGELOG.md`, directly under `# Changelog`: `## X.Y.Z — YYYY-MM-DD` (en dash), one summary sentence, then bullets of user-visible changes taken from `git log <last-tag>..HEAD`. Commit it (v0.1.1 put it in the final change commit, v0.1.0 in an earlier one; neither used a separate bump commit). Push `main`.
 5. Run the required checks. Any failure → stop and report.
 6. `release.sh --dry-run X.Y.Z "<tag message>"` and show the owner its output: tag message, notes, commands. Wait for an explicit yes.
 7. `release.sh X.Y.Z "<tag message>"`: annotated tag on HEAD, push tag, `gh release create vX.Y.Z --title vX.Y.Z` targeting `main`, not draft, not prerelease.
