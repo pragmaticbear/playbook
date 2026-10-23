@@ -1,6 +1,16 @@
 # Changelog
 
+## 0.2.3 — 2026-10-23
+
+The release playbook now keeps both version records in step and refuses to tag when they disagree.
+
+- `.claude/skills/release`: names the repo-root `SKILL.md` `metadata.version` alongside `CHANGELOG.md` in its inputs, permissions, procedure, prohibitions and outputs; `release.sh` fails if the two disagree.
+- v0.2.2 evidence record amended with the deviations and anomalies a review found.
+- 0.2.2 changelog entry gains its summary sentence.
+
 ## 0.2.2 — 2026-10-23
+
+Version metadata now matches the release.
 
 - `SKILL.md` frontmatter version now matches the release (it said 0.2.0 through 0.2.1).
 - README lists the repo's own `release` and `pressure-test` playbooks.
