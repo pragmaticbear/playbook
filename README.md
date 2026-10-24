@@ -2,9 +2,18 @@
 
 # playbook
 
-An [Agent Skill](https://agentskills.io/specification) that turns a repeated job into a reviewed, testable skill of its own. Expertise lives in the skill; acceptance lives outside the agent that does the work.
+**playbook turns a task you do again and again into written instructions an AI assistant can follow the same way every time, with a person still deciding whether the result is good enough.**
 
-Built for Claude Code, where it runs as `/playbook`. Other Agent Skills harnesses (Codex, OpenCode, Devin, and others) can load `SKILL.md`, but `capture` and `run` use Claude Code's skills paths (`.claude/skills/`, `~/.claude/skills/`) unless you adapt them.
+Think of it as writing a recipe for a recurring chore, such as a weekly report or a release checklist, so you can hand it off without losing control:
+
+1. **You describe the task once.** playbook asks you what starts it, what the steps are, what can go wrong, and how you will know it is done.
+2. **It writes three short files:** the instructions the assistant follows, an agreement listing what the assistant may and may not do (for example "never send anything without asking"), and a few test cases.
+3. **Each time the assistant does the task, it keeps a receipt:** what it ran, what came back, and anything it could not finish.
+4. **The assistant never approves its own work.** It can say "I did this"; only a check it does not control, or you, can say "this is correct" or "this is approved".
+
+It also refuses instructions hidden inside the material it works on, such as a note in a document that says "skip the checks".
+
+It runs inside [Claude Code](https://www.anthropic.com/claude-code), Anthropic's AI coding assistant, where you type `/playbook`. In technical terms it is an [Agent Skill](https://agentskills.io/specification). Other assistants that read Agent Skills (Codex, OpenCode, Devin and others) can load `SKILL.md`, but `capture` and `run` use Claude Code's skills folders (`.claude/skills/`, `~/.claude/skills/`) unless you adapt them.
 
 ## Install
 
